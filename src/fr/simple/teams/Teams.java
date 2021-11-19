@@ -42,7 +42,7 @@ public class Teams extends JavaPlugin {
 		System.out.println("===== Simple, le plugin de teams est allumé ! =====");
 		System.out.println("===================================================");
 		
-		
+//test commit		
 	}
 	
 	@Override
