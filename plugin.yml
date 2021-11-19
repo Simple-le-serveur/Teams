@@ -1,0 +1,35 @@
+main: fr.simple.teams.Teams
+name: Teams
+version: 1.0
+description: Simple, le plugin de teams est le plugin de teams du serveur.
+api-version: 1.16
+author: zetiti10
+website: simple.zapto.org
+prefix: Teams
+depend: [Vault]
+
+commands:
+  team:
+    description: Commandes du plugin de Teams
+    permission: teams.player
+    aliases: tm
+  modoteam:
+    description: Commandes modérateurs du plugin de teams
+    permission: teams.moderator
+  adminteam:
+    description: Commandes administrateurs du plugin de teams
+    permission: teams.admin
+  removep:
+    description: enlève un joueur
+    permission: teams.admin
+    
+permissions:
+  teams.player:
+    description: permission du joueur basique
+    default: true
+  teams.moderator:
+    description: permission du modérateur
+    default: false
+  teams.admin:
+    description: toutes les permission du plugin
+    default: op
