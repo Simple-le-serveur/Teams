@@ -21,7 +21,7 @@ public class RankingGUIs {
 		inv.setItem(49, GUIInterface.newItemS(Material.REDSTONE, "§cQuitter"));
 		inv.setItem(51, GUIInterface.newItemS(Material.ARROW, "§bPage suivante"));
 
-		List<String> teams = TeamsSort.SortTeams();//
+		List<String> teams = TeamsSort.SortTeams();
 		
 		int j = 10;
 		for (int i = 0; i < teams.size(); i++) {
