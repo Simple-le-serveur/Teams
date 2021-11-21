@@ -6,10 +6,10 @@ Simple, le plugin de bataille est un plugin qui, une fois fait, permettra de cr√
 
 # Cahier des charges
 
-Le cahier des charges est consultable [__ici__](https://github.com/zetiti10/Teams/blob/master/cahier_des_charges_compress%C3%A9.pdf)
+Le cahier des charges est consultable [__ici__](https://github.com/zetiti10/Teams/blob/master/cahier_des_charges_compress%C3%A9.pdf).
 
 ----------
 
 # Avancement
 
-![Avancement du plugin de teams](https://github.com/zetiti10/Teams/blob/master/avancement_plugin_teams.png)
+![Avancement du plugin de teams.](https://github.com/zetiti10/Teams/blob/master/avancement_plugin_teams.png)
