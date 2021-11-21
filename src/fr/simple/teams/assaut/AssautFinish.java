@@ -9,6 +9,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
+import org.bukkit.block.Chest;
 import org.bukkit.block.Skull;
 import org.bukkit.entity.Player;
 
@@ -23,8 +24,9 @@ public class AssautFinish {
 
 	@SuppressWarnings({ "deprecation", "unused" })
 	public AssautFinish(AssautData assaut, Teams teams) {
-		
-		System.out.println("1 §ePoints attaquants : " + assaut.getPtA() + " ; Points défenceurs : " + assaut.getPtA());
+
+		System.out.println("§e1 Kills attaquants : " + assaut.getKillsAttaquants() + " ; Kills défenceurs : "
+				+ assaut.getKillsDéfenceurs());
 
 		this.teams = teams;
 
@@ -48,7 +50,8 @@ public class AssautFinish {
 				}
 				current.setGameMode(GameMode.SURVIVAL);
 				current.teleport(locToTp);
-				current.sendTitle("§bScan en cours...", "§9Nous annalysons le champ de bataille", 20 * 1, 20 * 3, 20 * 1);
+				current.sendTitle("§bScan en cours...", "§9Nous annalysons le champ de bataille", 20 * 1, 20 * 3,
+						20 * 1);
 				current.playSound(current.getLocation(), Sound.ENTITY_TNT_PRIMED, 10, 1);
 				current.playSound(current.getLocation(), Sound.BLOCK_PISTON_EXTEND, 10, 1);
 			} catch (NullPointerException e) {
@@ -66,15 +69,17 @@ public class AssautFinish {
 				}
 				current.setGameMode(GameMode.SURVIVAL);
 				current.teleport(locToTp);
-				current.sendTitle("§bScan en cours...", "§9Nous annalysons le champ de bataille", 20 * 1, 20 * 3, 20 * 1);
+				current.sendTitle("§bScan en cours...", "§9Nous annalysons le champ de bataille", 20 * 1, 20 * 3,
+						20 * 1);
 				current.playSound(current.getLocation(), Sound.ENTITY_TNT_PRIMED, 10, 1);
 				current.playSound(current.getLocation(), Sound.BLOCK_PISTON_EXTEND, 10, 1);
 			} catch (NullPointerException e) {
 				continue;
 			}
 		}
-		
-		System.out.println("2 §ePoints attaquants : " + assaut.getPtA() + " ; Points défenceurs : " + assaut.getPtA());
+
+		System.out.println("§e 2 Kills attaquants : " + assaut.getKillsAttaquants() + " ; Kills défenceurs : "
+				+ assaut.getKillsDéfenceurs());
 
 		// scan de la map
 		Location claimB1 = ClaimData.getFirstLoc(assaut.getDéfenceurs());
@@ -124,10 +129,14 @@ public class AssautFinish {
 		Bukkit.getConsoleSender().sendMessage("Points défenceurs : " + pointsDéfenceurs);
 
 		// calcul de la destruction
+		// pBreak : pourcentage de blocs cassés
+		Bukkit.getConsoleSender()
+				.sendMessage("Calcul du pourcentage de blocks cassés : 100 * " + BC + " / " + assaut.getBlocks());
 		float pBreak = 100 * BC / assaut.getBlocks();
 		pBreak = 100 - pBreak;
 		Bukkit.getConsoleSender().sendMessage("Pourcentage de blocks cassés : " + pBreak + "%");
-		float ptPerPercent = 6 / pBreak;
+		// ptPerPercent : point par pourcentage cassé
+		float ptPerPercent = 0.06f;
 		Bukkit.getConsoleSender().sendMessage("Point par pourcent de destruction : " + ptPerPercent);
 		pointsAttaquants = pointsAttaquants + pBreak * ptPerPercent;
 		Bukkit.getConsoleSender().sendMessage("Points attaquants : " + pBreak * ptPerPercent);
@@ -138,27 +147,74 @@ public class AssautFinish {
 		if (assaut.isBankChestIsBreaked()) {
 			pointsAttaquants = pointsAttaquants + 8;
 			Bukkit.getConsoleSender().sendMessage("Coffre cassé");
+
 		} else {
-			pointsDéfenceurs = pointsDéfenceurs + 8;
-			Bukkit.getConsoleSender().sendMessage("Coffre non cassé");
+
+			Location chest = TeamData.getBankChest(assaut.getDéfenceurs());
+			Block block = chest.getBlock();
+			if (block.getType() == Material.CHEST) {
+				try {
+					String chestName = ((Chest) block.getState()).getCustomName();
+					Bukkit.getConsoleSender()
+							.sendMessage("Nom attendu pour le coffre de banque : banque " + assaut.getDéfenceurs());
+					if (chestName.equals("banque " + assaut.getDéfenceurs())) {
+						pointsDéfenceurs = pointsDéfenceurs + 8;
+						Bukkit.getConsoleSender().sendMessage("Coffre non cassé");
+					} else {
+						pointsAttaquants = pointsAttaquants + 8;
+						Bukkit.getConsoleSender().sendMessage("Coffre cassé");
+					}
+				} catch (NullPointerException e) {
+
+				}
+
+			} else {
+				pointsAttaquants = pointsAttaquants + 8;
+				Bukkit.getConsoleSender().sendMessage("Coffre cassé");
+			}
+
 		}
 
 		final float PercentageBreaked = pBreak;
 		final float ptsAtt = pointsAttaquants;
 		final float ptsDef = pointsDéfenceurs;
 
+		assaut.setPtA(ptsAtt);
+		assaut.setPtD(ptsDef);
+
 		if (ptsAtt > ptsDef) {
 			assaut.setWinner("attaquants");
 			assaut.setWinnerTeam(assaut.getAttaquants());
 			Bukkit.getConsoleSender().sendMessage("Gagnants : attaquants");
+			TeamData.setAttacksVictoryNumber(assaut.getAttaquants(),
+					TeamData.getAttacksVictoryNumber(assaut.getAttaquants()) + 1);
+			TeamData.setAttacksDefeatNumber(assaut.getDéfenceurs(),
+					TeamData.getAttacksDefeatNumber(assaut.getDéfenceurs()) + 1);
+			TeamData.setAttacksNumber(assaut.getAttaquants(), TeamData.getAttacksNumber(assaut.getAttaquants()) + 1);
+			TeamData.setAttacksNumber(assaut.getDéfenceurs(), TeamData.getAttacksNumber(assaut.getDéfenceurs()) + 1);
 		} else if (ptsAtt < ptsDef) {
 			assaut.setWinner("défenceurs");
 			assaut.setWinnerTeam(assaut.getDéfenceurs());
 			Bukkit.getConsoleSender().sendMessage("Gagnants : défenceurs");
+			TeamData.setAttacksVictoryNumber(assaut.getDéfenceurs(),
+					TeamData.getAttacksVictoryNumber(assaut.getDéfenceurs()) + 1);
+			TeamData.setAttacksDefeatNumber(assaut.getAttaquants(),
+					TeamData.getAttacksDefeatNumber(assaut.getAttaquants()) + 1);
+			TeamData.setAttacksNumber(assaut.getAttaquants(), TeamData.getAttacksNumber(assaut.getAttaquants()) + 1);
+			TeamData.setAttacksNumber(assaut.getDéfenceurs(), TeamData.getAttacksNumber(assaut.getDéfenceurs()) + 1);
 		} else {
 			assaut.setWinner("égalité !");
 			assaut.setWinnerTeam("égalité !");
 			Bukkit.getConsoleSender().sendMessage("Gagnant : les deux teams");
+		}
+
+		Bukkit.getConsoleSender().sendMessage("Points attaquants : " + pointsAttaquants);
+		Bukkit.getConsoleSender().sendMessage("Points défenceurs : " + pointsDéfenceurs);
+		
+		for(int i = 0; i < Assaut.teamsInFight2.size(); i ++) {
+			if(Assaut.teamsInFight2.get(i).contains(assaut.getAttaquants())) {
+				Assaut.teamsInFight2.remove(i);
+			}
 		}
 
 		// scan terminé
@@ -276,7 +332,7 @@ public class AssautFinish {
 					try {
 						Player current = Bukkit.getPlayer(UUID.fromString(attaquantPlayers.get(p)));
 						current.sendTitle("§9Avec un total de : §b" + Math.max(ptsAtt, ptsDef) + "§9,",
-								"§9le dagnant est ...", 20 * 1, 20 * 3, 20 * 1);
+								"§9le gagnant est ...", 20 * 1, 20 * 3, 20 * 1);
 						current.playSound(current.getLocation(), Sound.BLOCK_NOTE_BLOCK_SNARE, 10, 1);
 					} catch (NullPointerException e) {
 						continue;
@@ -287,7 +343,7 @@ public class AssautFinish {
 					try {
 						Player current = Bukkit.getPlayer(UUID.fromString(défenceursPlayers.get(p)));
 						current.sendTitle("§9Avec un total de : §b" + Math.max(ptsAtt, ptsDef) + "§9,",
-								"§9le dagnant est ...", 20 * 1, 20 * 3, 20 * 1);
+								"§9le gagnant est ...", 20 * 1, 20 * 3, 20 * 1);
 						current.playSound(current.getLocation(), Sound.BLOCK_NOTE_BLOCK_SNARE, 10, 1);
 					} catch (NullPointerException e) {
 						continue;
@@ -329,7 +385,7 @@ public class AssautFinish {
 						try {
 							Player current = Bukkit.getPlayer(UUID.fromString(attaquantPlayers.get(p)));
 							current.sendTitle(
-									"§Les défenceurs ont eu : §b" + Math.min(ptsAtt, ptsDef), "§9Il leur manquait §b"
+									"§9Les défenceurs ont eu : §b" + Math.min(ptsAtt, ptsDef), "§9Il leur manquait §b"
 											+ (assaut.getPtA() - assaut.getPtD() + 1) + " §9pour gagner...",
 									20 * 1, 20 * 3, 20 * 1);
 							current.playSound(current.getLocation(), Sound.BLOCK_NOTE_BLOCK_SNARE, 10, 1);
@@ -340,7 +396,7 @@ public class AssautFinish {
 						try {
 							Player current = Bukkit.getPlayer(UUID.fromString(défenceursPlayers.get(p)));
 							current.sendTitle(
-									"§Les attaquants ont eu : §b" + Math.min(ptsAtt, ptsDef), "§9Il leur manquait §b"
+									"§9Les attaquants ont eu : §b" + Math.min(ptsAtt, ptsDef), "§9Il leur manquait §b"
 											+ (assaut.getPtD() - assaut.getPtA() + 1) + " §9pour gagner...",
 									20 * 1, 20 * 3, 20 * 1);
 							current.playSound(current.getLocation(), Sound.BLOCK_NOTE_BLOCK_SNARE, 10, 1);
@@ -355,7 +411,7 @@ public class AssautFinish {
 						try {
 							Player current = Bukkit.getPlayer(UUID.fromString(attaquantPlayers.get(p)));
 							current.sendTitle(
-									"§Les défenceurs ont eu : §b" + Math.min(ptsAtt, ptsDef), "§9Il leur manquait §b"
+									"§9Les défenceurs ont eu : §b" + Math.min(ptsAtt, ptsDef), "§9Il leur manquait §b"
 											+ (assaut.getPtA() - assaut.getPtD() + 1) + " §9pour gagner...",
 									20 * 1, 20 * 3, 20 * 1);
 							current.playSound(current.getLocation(), Sound.BLOCK_NOTE_BLOCK_SNARE, 10, 1);
@@ -404,6 +460,9 @@ public class AssautFinish {
 						continue;
 					}
 				}
+				Bukkit.broadcastMessage(teams.prefix + " §9L'assaut qui opposait la team §b" + assaut.getAttaquants()
+						+ " §9à la team §b" + assaut.getDéfenceurs() + " §9est §bfini ! §9C'est la team §b"
+						+ assaut.getWinnerTeam() + " §9qui a gagné avec §b" + Math.max(ptsAtt, ptsDef) + "§9. §bBravo !");
 			}
 		}, 20 * 35L);
 

@@ -132,16 +132,16 @@ public class AssautData {
 		return ptA;
 	}
 
-	public void setPtA(float ptA) {
-		this.ptA = ptA;
+	public void setPtA(float ptsAtt) {
+		this.ptA = ptsAtt;
 	}
 
 	public float getPtD() {
 		return ptD;
 	}
 
-	public void setPtD(float ptD) {
-		this.ptD = ptD;
+	public void setPtD(float ptsDef) {
+		this.ptD = ptsDef;
 	}
 
 	public String getWinnerTeam() {

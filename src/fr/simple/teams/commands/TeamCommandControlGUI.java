@@ -40,9 +40,7 @@ public class TeamCommandControlGUI {
 		Inventory inv = GUIInterface.startInv54(invB);
 
 		List<String> playersTeam = TeamData.getAllPlayerFromTeam(TeamData.getPlayerTeam(player.getUniqueId()));
-		for (int i = 0; i < playersTeam.size(); i++) {
-		}
-
+		
 		int j = 10;
 		for (int i = 0; i < playersTeam.size(); i++) {
 			if (j == 17 || j == 26 || j == 35) {

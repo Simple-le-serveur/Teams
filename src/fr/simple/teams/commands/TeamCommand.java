@@ -20,6 +20,7 @@ import fr.simple.teams.assautRequest.AssautRequestData;
 import fr.simple.teams.assautRequest.AssautRequestGUI;
 import fr.simple.teams.assautRequest.AssautRequestSendData;
 import fr.simple.teams.claims.ClaimData;
+import fr.simple.teams.ranking.TeamsSort;
 
 public class TeamCommand implements TabExecutor {
 
@@ -65,6 +66,9 @@ public class TeamCommand implements TabExecutor {
 			}
 
 			switch (args[0]) {
+			case "test2":
+				TeamsSort.SortTeams();
+				break;
 			case "create":
 				if (TeamData.getPlayerTeam(player.getUniqueId()) != "null") {
 					player.sendMessage(

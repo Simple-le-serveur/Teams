@@ -71,10 +71,10 @@ public class AssautListener implements Listener {
 											+ " §bVous êtes mort !§9 Vous ne pouvez plus réaparaître. En attendant les résultats, vous pouvez assister à la fin du combat.");
 									p.playSound(p.getLocation(), Sound.ENTITY_ZOMBIE_DEATH, 10, 10);
 									assaut.setKillsDéfenceurs(assaut.getKillsDéfenceurs() + 1);
-									// return;
+									return;
 								}
 							}
-							// return;
+							return;
 						}
 						assaut.setKillsDéfenceurs(assaut.getKillsDéfenceurs() + 1);
 						deathPlayer.add(event.getEntity());
@@ -418,14 +418,14 @@ public class AssautListener implements Listener {
 			if (event.getPlayer() == Assaut.losers.get(i)) {
 				List<String> teamsInFight = Assaut.teamsInFight2;
 				for (int j = 0; j < teamsInFight.size(); j++) {
-						String current = teamsInFight.get(j);
-						String pAttaquants = current.split("\\s+")[0];
-						String pDéfenceurs = current.split("\\s+")[1];
-						if (TeamData.getPlayerTeam(event.getPlayer().getUniqueId()).equals(pAttaquants)
-								|| TeamData.getPlayerTeam(event.getPlayer().getUniqueId()).equals(pDéfenceurs)) {
-							attaquants = current.split("\\s+")[0];
-							défenceurs = current.split("\\s+")[1];
-						}
+					String current = teamsInFight.get(j);
+					String pAttaquants = current.split("\\s+")[0];
+					String pDéfenceurs = current.split("\\s+")[1];
+					if (TeamData.getPlayerTeam(event.getPlayer().getUniqueId()).equals(pAttaquants)
+							|| TeamData.getPlayerTeam(event.getPlayer().getUniqueId()).equals(pDéfenceurs)) {
+						attaquants = current.split("\\s+")[0];
+						défenceurs = current.split("\\s+")[1];
+					}
 				}
 			}
 			if (TeamData.getPlayerTeam(event.getPlayer().getUniqueId()).equals(attaquants)
@@ -527,27 +527,31 @@ public class AssautListener implements Listener {
 									if (assaut.getPhase().equals("préparation")) {
 										event.getPlayer().sendMessage(teams.prefix
 												+ " §cVous ne pouvez pas casser le coffre banque lors de la phase de préparation !");
+										return;
 									}
 									assaut.setBankChestIsBreaked(true);
+									TeamData.setBankChest(assaut.getDéfenceurs(), null);
 									event.getPlayer().sendMessage(teams.prefix
 											+ " §bFélicitations !§9 Vous venez de casser le coffre banque de la team §b"
 											+ assaut.getAttaquants()
 											+ " §9! Vous avez désormais beaucoup de chances de gagner.");
 									List<String> pA = TeamData.getAllPlayerFromTeam(assaut.getAttaquants());
 									List<String> pD = TeamData.getAllPlayerFromTeam(assaut.getDéfenceurs());
-									for (int j = 0; i < pA.size(); i++) {
-										Bukkit.getPlayer(UUID.fromString(pA.get(j))).sendTitle("§bCoffre banque cassé",
-												"§9par §b" + event.getPlayer().getName(), 0, 3, 0);
-										Bukkit.getPlayer(UUID.fromString(pA.get(j)))
-												.sendMessage(teams.prefix + " §b" + event.getPlayer().getName()
-														+ " §9a cassé le coffre banque des défenceurs !");
+									for (int j = 0; j < pA.size(); j++) {
+										Player currentPlayer = Bukkit.getPlayer(UUID.fromString(pA.get(j)));
+										currentPlayer.playSound(currentPlayer.getLocation(), Sound.UI_TOAST_CHALLENGE_COMPLETE, 10, 1);
+										currentPlayer.sendTitle("§bCoffre banque cassé",
+												"§9par §b" + event.getPlayer().getName(), 0, 3 * 20, 1 * 20);
+										currentPlayer.sendMessage(teams.prefix + " §b" + event.getPlayer().getName()
+												+ " §9a cassé le coffre banque des défenceurs !");
 									}
-									for (int j = 0; i < pD.size(); i++) {
-										Bukkit.getPlayer(UUID.fromString(pA.get(j))).sendTitle("§bCoffre banque cassé",
-												"§9par §b" + event.getPlayer().getName(), 0, 3, 0);
-										Bukkit.getPlayer(UUID.fromString(pA.get(j)))
-												.sendMessage(teams.prefix + " §b" + event.getPlayer().getName()
-														+ " §9a cassé le coffre banque des défenceurs !");
+									for (int j = 0; j < pD.size(); j++) {
+										Player currentPlayer = Bukkit.getPlayer(UUID.fromString(pA.get(j)));
+										currentPlayer.playSound(currentPlayer.getLocation(), Sound.ENTITY_ENDER_DRAGON_DEATH, 10, 1);
+										currentPlayer.sendTitle("§bCoffre banque cassé",
+												"§9par §b" + event.getPlayer().getName(), 0, 3 * 20, 1 * 20);
+										currentPlayer.sendMessage(teams.prefix + " §b" + event.getPlayer().getName()
+												+ " §9a cassé le coffre banque des défenceurs !");
 									}
 									return;
 								} catch (NullPointerException e) {
