@@ -1,6 +1,5 @@
 package fr.simple.teams.ranking;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
