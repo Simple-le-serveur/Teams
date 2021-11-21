@@ -1,2 +1,5 @@
-# Teams
-Simple, le plugin de teams est le plugin de teams du serveur Simple.
+# Simple, le plugin de Teams
+
+Simple, le plugin de teams est le plugin de teams du serveur Simple. 
+
+----------
