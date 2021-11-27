@@ -20,6 +20,7 @@ import fr.simple.teams.assautRequest.AssautRequestData;
 import fr.simple.teams.assautRequest.AssautRequestGUI;
 import fr.simple.teams.assautRequest.AssautRequestSendData;
 import fr.simple.teams.claims.ClaimData;
+import fr.simple.teams.ranking.RankingGUIs;
 import fr.simple.teams.ranking.TeamsSort;
 
 public class TeamCommand implements TabExecutor {
@@ -451,6 +452,10 @@ public class TeamCommand implements TabExecutor {
 				} catch (NullPointerException e) {
 					player.sendMessage("§eSimplebot §8» §cVeuillez définir la zone de claim de votre team.");
 				}
+				break;
+				
+			case "top":
+				RankingGUIs.rankingGUIMain(player);
 				break;
 				
 			default:

@@ -820,7 +820,7 @@ public class TeamListener implements Listener {
 			case DIAMOND_SWORD:
 				String TName = current.getItemMeta().getDisplayName();
 				TName = TName.replace("§bClassement de la team ", "");
-				//////////////////////// :MENU CLASSEMENT TEAM:////////////////////////
+				Bukkit.dispatchCommand(player, "team top");
 				break;
 			case REDSTONE:
 				player.closeInventory();

@@ -8,6 +8,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 
+import fr.simple.teams.TeamData;
 import fr.simple.teams.functionsGUI.GUIInterface;
 
 public class RankingGUIs {
@@ -29,20 +30,22 @@ public class RankingGUIs {
 				j = j + 2;
 			}
 			if (j == 10) {
-				inv.setItem(j, GUIInterface.newItemC(Material.YELLOW_CONCRETE, teams.get(i), i,
-						Arrays.asList("§b" + i + "ème", "§bClique gauche §9pour voir", "§9cette team"), true));
+				inv.setItem(j, GUIInterface.newItemC(Material.YELLOW_CONCRETE, "§b" + teams.get(i), (i + 1),
+						Arrays.asList("§9Place : §b" + (i + 1) + "ère", "§9Score : §b" + TeamData.getTeamNotation(teams.get(i)), "§9", "§bClique gauche §9pour voir", "§9cette team"), false));
 			} else if (j == 11) {
-				inv.setItem(j, GUIInterface.newItemC(Material.LIGHT_GRAY_CONCRETE, teams.get(i), i,
-						Arrays.asList("§b" + i + "ème", "§bClique gauche §9pour voir", "§9cette team"), true));
+				inv.setItem(j, GUIInterface.newItemC(Material.LIGHT_GRAY_CONCRETE, "§b" + teams.get(i), (i + 1),
+						Arrays.asList("§9Place : §b" + (i + 1) + "ème", "§9Score : §b" + TeamData.getTeamNotation(teams.get(i)), "§9", "§bClique gauche §9pour voir", "§9cette team"), false));
 			} else if (j == 12) {
-				inv.setItem(j, GUIInterface.newItemC(Material.BROWN_CONCRETE, teams.get(i), i,
-						Arrays.asList("§b" + i + "ème", "§bClique gauche §9pour voir", "§9cette team"), true));
+				inv.setItem(j, GUIInterface.newItemC(Material.BROWN_CONCRETE, "§b" + teams.get(i), (i + 1),
+						Arrays.asList("§9Place : §b" + (i + 1) + "ème", "§9Score : §b" + TeamData.getTeamNotation(teams.get(i)), "§9", "§bClique gauche §9pour voir", "§9cette team"), false));
 			} else {
-				inv.setItem(j, GUIInterface.newItemC(Material.WHITE_CONCRETE, teams.get(i), i,
-						Arrays.asList("§b" + i + "ème", "§bClique gauche §9pour voir", "§9cette team"), false));
+				inv.setItem(j, GUIInterface.newItemC(Material.WHITE_CONCRETE, "§b" + teams.get(i), (i + 1),
+						Arrays.asList("§9Place : §b" + (i + 1) + "ème", "§9Score : §b" + TeamData.getTeamNotation(teams.get(i)), "§9", "§bClique gauche §9pour voir", "§9cette team"), false));
 			}
 			j++;
 		}
+		
+		player.openInventory(inv);
 
 	}
 

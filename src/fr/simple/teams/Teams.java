@@ -9,6 +9,7 @@ import fr.simple.teams.claims.ClaimsManager;
 import fr.simple.teams.commands.CommandRemovep;
 import fr.simple.teams.commands.TeamCommand;
 import fr.simple.teams.luckyBlocks.LuckyBlockBreak;
+import fr.simple.teams.ranking.RankingListeners;
 import net.milkbowl.vault.economy.Economy;
 
 public class Teams extends JavaPlugin {
@@ -35,6 +36,7 @@ public class Teams extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new TeamListener(this), this);
 		getServer().getPluginManager().registerEvents(new LuckyBlockBreak(this), this);
 		getServer().getPluginManager().registerEvents(new AssautListener(this), this);
+		getServer().getPluginManager().registerEvents(new RankingListeners(this), this);
 		
 		Claims.initClaimSystem();
 		
