@@ -33,3 +33,6 @@ permissions:
   teams.admin:
     description: toutes les permission du plugin
     default: op
+  teams.vote:
+    description: permission pour voter
+    default: op

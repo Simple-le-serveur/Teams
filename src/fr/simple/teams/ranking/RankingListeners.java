@@ -9,17 +9,31 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
 
 import fr.simple.teams.Teams;
 
 public class RankingListeners implements Listener {
+	
+	public static boolean isVoted = true;
 
 	@SuppressWarnings("unused")
 	private Teams teams;
 
 	public RankingListeners(Teams teams) {
 		this.teams = teams;
+	}
+	
+	@EventHandler
+	public void onConnect(PlayerJoinEvent event) {
+		if(isVoted == false && event.getPlayer().hasPermission("teams.vote")) {
+			Player player = event.getPlayer();
+			player.sendMessage("§9        [ §b§lVote de teams §9]        §9");
+			player.sendMessage("§9Vous pouvez §bvoter §9pour le classement des teams.");
+			player.sendMessage("§9Tapez §b/team vote §9pour commencer.");
+			player.sendMessage("§c§lATTENTION ! Si vous commencer, veillez a avoir le temps de terminer !");
+		}
 	}
 
 	@EventHandler
