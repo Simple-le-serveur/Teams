@@ -1,5 +1,9 @@
 package fr.simple.teams;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -40,18 +44,28 @@ public class Teams extends JavaPlugin {
 		
 		Claims.initClaimSystem();
 		
-		System.out.println("===================================================");
-		System.out.println("===== Simple, le plugin de teams est allumé ! =====");
-		System.out.println("===================================================");
+		Date date= new Date();
+		SimpleDateFormat jour_semaine = new SimpleDateFormat("E");
+		SimpleDateFormat heure = new SimpleDateFormat("k");
+		if(heure.format(date).toString().equals("2")) {
+			Bukkit.getConsoleSender().sendMessage("===== REDÉMARAGE JOURNALIER =====");
+			if(jour_semaine.format(date).toString().equals("lun.")) {
+				RankingListeners.isVoted = false;
+			}
+		}
+		
+		Bukkit.getConsoleSender().sendMessage("===================================================");
+		Bukkit.getConsoleSender().sendMessage("===== Simple, le plugin de teams est allumé ! =====");
+		Bukkit.getConsoleSender().sendMessage("===================================================");
 		
 	
 	}
 	
 	@Override
 	public void onDisable() {
-		System.out.println("===================================================");
-		System.out.println("===== Simple, le plugin de teams est éteint ! =====");
-		System.out.println("===================================================");
+		Bukkit.getConsoleSender().sendMessage("===================================================");
+		Bukkit.getConsoleSender().sendMessage("===== Simple, le plugin de teams est éteint ! =====");
+		Bukkit.getConsoleSender().sendMessage("===================================================");
 	}
 	
 	private boolean setupEconomy() {
