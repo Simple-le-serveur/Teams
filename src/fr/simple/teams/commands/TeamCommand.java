@@ -22,9 +22,7 @@ import fr.simple.teams.assautRequest.AssautRequestSendData;
 import fr.simple.teams.claims.ClaimData;
 import fr.simple.teams.ranking.RankingGUIs;
 import fr.simple.teams.ranking.RankingListeners;
-import fr.simple.teams.ranking.Stage;
 import fr.simple.teams.ranking.Vote;
-import fr.simple.teams.ranking.VoteData;
 
 public class TeamCommand implements TabExecutor {
 
@@ -488,22 +486,14 @@ public class TeamCommand implements TabExecutor {
 					if (RankingListeners.isVoted == false) {
 						Vote.playerVote(player);
 					} else {
-						if (Vote.inVoting == player) {
-							VoteData data = VoteData.VoteData.get(player);
-							if(data.getStage() == Stage.VISIT_BUILD) {
-								RankingGUIs.RankingVoteBuild(player);
-								data.setStage(Stage.VOTE_BUILD);
-							}
-						} else {
-							player.sendMessage(
-									"§eSimplebot §8» §cLe vote a déjà été fait. Attendez lundi prochain pour le prochain vote");
-						}
+						Vote.reOpen(player);
 					}
 				}
 				break;
-				
+
 			case "forceVote":
-				player.sendMessage("§eSimplebot §8» §cVous avez forcé l'état actuel de vote. N'utilisez cette commande qu'en cas de problème.");
+				player.sendMessage(
+						"§eSimplebot §8» §cVous avez forcé l'état actuel de vote. N'utilisez cette commande qu'en cas de problème.");
 				RankingListeners.isVoted = false;
 				break;
 

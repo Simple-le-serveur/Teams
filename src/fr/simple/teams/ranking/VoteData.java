@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 public class VoteData {
 	
 	private Player player = null;
-	private Stage stage = Stage.VISIT_BUILD;
+	private Stage stage = null;
 	private VoteBuild voteBuild = null;
 	private VoteChest voteChest = null;
 	private int currentTeam = 0;

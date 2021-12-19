@@ -31,17 +31,20 @@ public class RankingListeners implements Listener {
 
 	@EventHandler
 	public void onConnect(PlayerJoinEvent event) {
-		if (isVoted == false && event.getPlayer().hasPermission("teams.vote")) {
-			Player player = event.getPlayer();
-			player.sendMessage("§9        [ §b§lVote de teams §9]        §9");
-			player.sendMessage("§9Vous pouvez §bvoter §9pour le classement des teams.");
-			player.sendMessage("§9Tapez §b/team vote §9pour commencer.");
-			player.sendMessage("§c§lATTENTION ! Si vous commencer, veillez a avoir le temps de terminer !");
-		} else if (Vote.inVoting == event.getPlayer()) {
-			Player player = event.getPlayer();
-			player.sendMessage("§9        [ §b§lVote de teams §9]        §9");
-			player.sendMessage("§9Vous avez commencé a §bvoter §9pour le classement des teams.");
-			player.sendMessage("§9Tapez §b/team vote §9pour continuer.");
+		try {
+			if (isVoted == false && event.getPlayer().hasPermission("teams.vote")) {
+				Player player = event.getPlayer();
+				player.sendMessage("§9        [ §b§lVote de teams §9]        §9");
+				player.sendMessage("§9Vous pouvez §bvoter §9pour le classement des teams.");
+				player.sendMessage("§9Tapez §b/team vote §9pour commencer.");
+				player.sendMessage("§c§lATTENTION ! Si vous commencer, veillez a avoir le temps de terminer !");
+			} else if (Vote.inVoting.getName().equals(event.getPlayer().getName())) {
+				Player player = event.getPlayer();
+				player.sendMessage("§9        [ §b§lVote de teams §9]        §9");
+				player.sendMessage("§9Vous avez commencé a §bvoter §9pour le classement des teams.");
+				player.sendMessage("§9Tapez §b/team vote §9pour continuer.");
+			}
+		} catch (NullPointerException e) {
 		}
 	}
 
@@ -71,7 +74,7 @@ public class RankingListeners implements Listener {
 				player.closeInventory();
 				player.sendMessage(teams.prefix + " §cVous n'avez rien a faire ici !!!");
 			}
-			VoteData data = VoteData.VoteData.get(player);
+			VoteData data = Vote.data1;
 			event.setCancelled(true);
 			player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 10, 10);
 			switch (current.getType()) {
@@ -114,7 +117,7 @@ public class RankingListeners implements Listener {
 		} else if (event.getView().getTitle().contains("§9Vote - Richesses de la team §b")) {
 			if (current.getType() == Material.GREEN_CONCRETE) {
 				RankingGUIs.RankingVoteRessources(player);
-				VoteData data = VoteData.VoteData.get(player);
+				VoteData data = Vote.data1;
 				data.setStage(Stage.VOTE_CHEST);
 			}
 		} else if (event.getView().getTitle().equals("§9Vote ressources")) {
@@ -122,7 +125,7 @@ public class RankingListeners implements Listener {
 				player.closeInventory();
 				player.sendMessage(teams.prefix + " §cVous n'avez rien a faire ici !!!");
 			}
-			VoteData data = VoteData.VoteData.get(player);
+			VoteData data = Vote.data1;
 			event.setCancelled(true);
 			player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 10, 10);
 			switch (current.getType()) {
