@@ -927,8 +927,14 @@ public class TeamListener implements Listener {
 					} catch (NullPointerException e) {
 						player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 10, 10);
 						AssautRequestData data1 = AssautRequestData.AssautRequestData.get(player.getName());
+						if(!data1.getAttaquants().equals(data1.getDéfenceurs())) {
 						TeamData.attackRequest(data1.getAttaquants(), data1.getDéfenceurs(), data1.getDemandeur(),
 								data1.getAccès(), data1.getTpsPréparation(), data1.getTpsAttaque());
+						} else {
+							player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 10, 10);
+							player.sendMessage(teams.prefix
+									+ " §cVous ne pouvez pas vous assiéger vous-même !");
+						}
 						player.closeInventory();
 					}
 				} else {

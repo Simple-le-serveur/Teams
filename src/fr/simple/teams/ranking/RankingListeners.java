@@ -22,7 +22,7 @@ import fr.simple.teams.functionsGUI.GUIInterface;
 
 public class RankingListeners implements Listener {
 
-	public static boolean isVoted = false;
+	public static boolean isVoted = true;
 	private Teams teams;
 
 	public RankingListeners(Teams teams) {
