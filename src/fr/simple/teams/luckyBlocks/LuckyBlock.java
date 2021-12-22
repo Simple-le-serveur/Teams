@@ -4,6 +4,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Skull;
+import org.bukkit.inventory.ItemStack;
 
 
 public class LuckyBlock {
@@ -17,6 +18,12 @@ public class LuckyBlock {
 		skull.setOwner("Luck");
 		skull.update();
 		
+	}
+	
+	public static ItemStack item(Material material, int amount) {
+		ItemStack item = new ItemStack(material);
+		item.setAmount(amount);
+		return item;
 	}
 	
 }

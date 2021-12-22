@@ -20,6 +20,9 @@ import fr.simple.teams.assautRequest.AssautRequestData;
 import fr.simple.teams.assautRequest.AssautRequestGUI;
 import fr.simple.teams.assautRequest.AssautRequestSendData;
 import fr.simple.teams.claims.ClaimData;
+import fr.simple.teams.customsItems.BridgeEgg;
+import fr.simple.teams.customsItems.FireBall;
+import fr.simple.teams.luckyBlocks.LuckyBlock;
 import fr.simple.teams.ranking.RankingGUIs;
 import fr.simple.teams.ranking.RankingListeners;
 import fr.simple.teams.ranking.Vote;
@@ -88,19 +91,11 @@ public class TeamCommand implements TabExecutor {
 				break;
 
 			case "test":
-				Assaut.alivePlayers.clear();
-				/*
-				 * Block block = loc.getBlock(); block.setType(Material.PLAYER_HEAD);
-				 * 
-				 * Skull skull = (Skull) block.getState(); skull.setOwner("Luck");
-				 * skull.update();
-				 */
-				// ItemStack luckyBlock = new ItemStack(Material.PLAYER_HEAD);
-				/*
-				 * Location playerLoc = player.getLocation(); Block block =
-				 * playerLoc.getBlock(); block.setType(Material.PLAYER_HEAD); Skull skull =
-				 * (Skull) block.getState(); skull.setOwner("Luck"); skull.update();
-				 */
+				player.getInventory().addItem(FireBall.FireBall1);
+				player.getInventory().addItem(FireBall.FireBall2);
+				player.getInventory().addItem(FireBall.FireBall3);
+				player.getInventory().addItem(BridgeEgg.BridgeEgg);
+				LuckyBlock.spawn(player.getLocation());
 				break;
 
 			case "control":
