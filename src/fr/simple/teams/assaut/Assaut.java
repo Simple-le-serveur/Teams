@@ -76,9 +76,10 @@ public class Assaut {
 		for (int i = 0; i < pA.size(); i++) {
 			try {
 				final Player player = Bukkit.getPlayer(UUID.fromString(pA.get(i)));
-				alivePlayers.add(player);
 				player.sendMessage(teams.prefix + " §bC'est parti !§9 Vous et votre team allez attaquer la team §b"
 						+ assaut.getDéfenceurs() + " §9dans quelques secondes !");
+				alivePlayers.add(player);
+				player.setDisplayName("§c" + player.getName() + "§f");
 				Location locToTp = AssautFunctions.tpZoneAlentoure(claimB1, claimB2);
 				player.teleport(locToTp);
 			} catch (NullPointerException e) {
@@ -89,9 +90,10 @@ public class Assaut {
 		for (int i = 0; i < pD.size(); i++) {
 			try {
 				final Player player = Bukkit.getPlayer(UUID.fromString(pD.get(i)));
-				alivePlayers.add(player);
 				player.sendMessage(teams.prefix + " §bC'est parti !§9 Vous et votre team allez être attaqués par la team §b"
 						+ assaut.getAttaquants() + " §9dans quelques secondes !");
+				alivePlayers.add(player);
+				player.setDisplayName("§9" + player.getName() + "§f");
 				Location locToTp = AssautFunctions.tpZoneClaim(claimB1, claimB2);
 				player.teleport(locToTp);
 			} catch (NullPointerException e) {

@@ -26,6 +26,7 @@ import fr.simple.teams.luckyBlocks.LuckyBlock;
 import fr.simple.teams.ranking.RankingGUIs;
 import fr.simple.teams.ranking.RankingListeners;
 import fr.simple.teams.ranking.Vote;
+import net.md_5.bungee.api.ChatColor;
 
 public class TeamCommand implements TabExecutor {
 
@@ -39,6 +40,8 @@ public class TeamCommand implements TabExecutor {
 	@Override
 	public List<String> onTabComplete(CommandSender arg0, Command arg1, String arg2, String[] arg3) {
 		List<String> listToReturn = new ArrayList<String>();
+		listToReturn.add("help");
+		listToReturn.add("list");
 		listToReturn.add("create");
 		listToReturn.add("info");
 		listToReturn.add("attack");
@@ -50,7 +53,6 @@ public class TeamCommand implements TabExecutor {
 		listToReturn.add("accept");
 		listToReturn.add("deny");
 		listToReturn.add("top");
-		listToReturn.add("test");
 		listToReturn.add("acceptAttack");
 		listToReturn.add("denyAttack");
 		listToReturn.add("tpAttack");
@@ -61,6 +63,7 @@ public class TeamCommand implements TabExecutor {
 		return listToReturn;
 	}
 
+	@SuppressWarnings({ "unused", "deprecation" })
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 
@@ -68,12 +71,21 @@ public class TeamCommand implements TabExecutor {
 
 			Player player = (Player) sender;
 
-			if (args[0].isEmpty()) {
-				sender.sendMessage("§cPAGE D'AIDE");
+			try {
+				if (args[0].equals("malo")) {
+					player.sendMessage("§6§lCHICO");
+					return true;
+				}
+			} catch (IndexOutOfBoundsException e) {
+				player.sendMessage("§eSimplebot §8» §cCommande inconnue, nous vous renvoyons à la page d'aide.");
+				Teams.helpPage(player);
 				return true;
-			}
+			} 
 
 			switch (args[0]) {
+			case "help":
+				Teams.helpPage(player);
+				break;
 			case "create":
 				if (TeamData.getPlayerTeam(player.getUniqueId()) != "null") {
 					player.sendMessage(
@@ -113,9 +125,14 @@ public class TeamCommand implements TabExecutor {
 						if (args[1].equals(teams.get(i))) {
 							String team = args[1];
 							if (TeamData.getAccess(team).equals("OPEN")) {
-								TeamData.addPlayer(args[1], ((Player) sender).getUniqueId(), "membres");
-								sender.sendMessage("§eSimplebot §8» §9Vous venez de rejoindre la team §b" + args[1]
-										+ " §9 ! Bon jeu sur Simple.");
+								if (TeamData.getPlayerTeam(player.getUniqueId()).equals("null")) {
+									TeamData.addPlayer(args[1], ((Player) sender).getUniqueId(), "membres");
+									sender.sendMessage("§eSimplebot §8» §9Vous venez de rejoindre la team §b" + args[1]
+											+ " §9 ! Bon jeu sur Simple.");
+								} else {
+									sender.sendMessage(
+											"§eSimplebot §8» §cVous êtes déjà dans une team ! Quittez-la en tapant /team leave.");
+								}
 								return true;
 							} else if (TeamData.getAccess(team).equals("ON_INVITATION")) {
 								int counter = 0;
@@ -163,7 +180,7 @@ public class TeamCommand implements TabExecutor {
 
 			case "invite":
 
-				if (args[1] != null) {
+				if (args[1].isEmpty()) {
 					@SuppressWarnings("unchecked")
 					List<Player> playersC = (List<Player>) Bukkit.getOnlinePlayers();
 					for (int i = 0; i < playersC.size(); i++) {
@@ -222,7 +239,7 @@ public class TeamCommand implements TabExecutor {
 				try {
 					TeamCommandInviteData invite = TeamCommandInviteData.TeamCommandInviteData
 							.get(((Player) sender).getPlayer().getName());
-					if (TeamData.getPlayerTeam(player.getUniqueId()) == "null") {
+					if (TeamData.getPlayerTeam(player.getUniqueId()).equals("null")) {
 						TeamData.addPlayer(invite.getTeam(), player.getUniqueId(), "membre");
 						invite.getInvitor().sendMessage("§eSimplebot §8» §b " + invite.getPlayer().getName()
 								+ " §9a accepté votre demande. Il rejoin donc la team §b" + invite.getTeam() + " §9!");
@@ -246,7 +263,7 @@ public class TeamCommand implements TabExecutor {
 					TeamCommandJoinData invite = TeamCommandJoinData.TeamCommandJoinData
 							.get(((Player) sender).getPlayer().getName());
 
-					if (TeamData.getPlayerTeam(player.getUniqueId()) == "null") {
+					if (TeamData.getPlayerTeam(player.getUniqueId()).equals("null")) {
 						TeamData.addPlayer(invite.getTeam(), player.getUniqueId(), "membre");
 						invite.getApplicant().sendMessage("§eSimplebot §8» §b " + invite.getPlayer().getName()
 								+ " §9rejoin la team §b" + invite.getTeam() + " §9!");
@@ -272,7 +289,7 @@ public class TeamCommand implements TabExecutor {
 				try {
 					TeamCommandInviteData invite = TeamCommandInviteData.TeamCommandInviteData
 							.get(((Player) sender).getPlayer().getName());
-					if (TeamData.getPlayerTeam(player.getUniqueId()) == "null") {
+					if (TeamData.getPlayerTeam(player.getUniqueId()).equals("null")) {
 						invite.getInvitor().sendMessage("§eSimplebot §8» §b " + invite.getPlayer().getName()
 								+ " §9a refusé votre demande pour rejoindre la team.");
 						sender.sendMessage(
@@ -297,7 +314,7 @@ public class TeamCommand implements TabExecutor {
 					TeamCommandJoinData invite = TeamCommandJoinData.TeamCommandJoinData
 							.get(((Player) sender).getPlayer().getName());
 
-					if (TeamData.getPlayerTeam(player.getUniqueId()) == "null") {
+					if (TeamData.getPlayerTeam(player.getUniqueId()).equals("null")) {
 						invite.getApplicant().sendMessage("§eSimplebot §8» §b " + invite.getPlayer().getName()
 								+ " §9a refusé votre demande pour rejoindre la team.");
 						sender.sendMessage(
@@ -318,7 +335,7 @@ public class TeamCommand implements TabExecutor {
 				break;
 
 			case "info":
-				if (args[1] != null) {
+				if (!args[1].isEmpty()) {
 					List<String> teams = TeamData.getAllTeams();
 					for (int i = 0; i < teams.size(); i++) {
 						if (teams.get(i).equals(args[1])) {
@@ -333,18 +350,23 @@ public class TeamCommand implements TabExecutor {
 				}
 				break;
 
-			case "acceptAttack":
-				try { /////////// BON GRADE ////////////////
-					@SuppressWarnings("unused")
-					AssautRequestSendData data = AssautRequestSendData.AssautRequestSendData
-							.get(TeamData.getPlayerTeam(player.getUniqueId()));
-					AssautRequestGUI.assautRequestGUIConfirm(player);
+			case "acceptAttack": case "acceptattack":
+				try {
+					if (TeamData.getPlayerRank(player.getUniqueId()) == "membres-de-confiance"
+							|| TeamData.getPlayerRank(((Player) sender).getUniqueId()) == "sous-chefs"
+							|| TeamData.getPlayerRank(((Player) sender).getUniqueId()) == "chefs") {
+						AssautRequestSendData data = AssautRequestSendData.AssautRequestSendData
+								.get(TeamData.getPlayerTeam(player.getUniqueId()));
+						AssautRequestGUI.assautRequestGUIConfirm(player);
+					} else {
+						player.sendMessage("§eSimplebot §8» §cVous n'avez pas la permission pour accepter des demandes d'assaut.");
+					}
 				} catch (NullPointerException e) {
 					player.sendMessage(
 							"§eSimplebot §8» §cVous n'avez aucune demande d'assaut en cours, ou vous avez indiqué un nom de team erroné.");
 				}
 				break;
-			case "denyAttack":
+			case "denyAttack": case "denyattack":
 				try {
 					AssautRequestSendData data = AssautRequestSendData.AssautRequestSendData
 							.get(TeamData.getPlayerTeam(player.getUniqueId()));
@@ -415,7 +437,7 @@ public class TeamCommand implements TabExecutor {
 				}
 				break;
 
-			case "tpAttack":
+			case "tpAttack": case "tpattack":
 				try {
 					String playerTeam = TeamData.getPlayerTeam(player.getUniqueId());
 					if (!playerTeam.equals("null")) {
@@ -451,7 +473,7 @@ public class TeamCommand implements TabExecutor {
 				}
 				break;
 
-			case "tpClaim":
+			case "tpClaim": case "tpclaim":
 				try {
 					String playerTeam = TeamData.getPlayerTeam(player.getUniqueId());
 					Location chestLoc = TeamData.getBankChest(playerTeam);
@@ -486,13 +508,37 @@ public class TeamCommand implements TabExecutor {
 				}
 				break;
 
-			case "forceVote":
+			case "forceVote": case "forcevote":
 				player.sendMessage(
 						"§eSimplebot §8» §cVous avez forcé l'état actuel de vote. N'utilisez cette commande qu'en cas de problème.");
 				RankingListeners.isVoted = false;
 				break;
 
+			case "leave":
+				String playerTeam = TeamData.getPlayerTeam(player.getUniqueId());
+				if (playerTeam.equals("null")) {
+					player.sendMessage("§eSimplebot §8» §cVous devez être dans une team pour la quitter !");
+				} else {
+					TeamData.removePlayer(playerTeam, player.getUniqueId());
+					player.sendMessage("§eSimplebot §8» §9Vous venez de quitter votre team !");
+				}
+				break;
+				
+			case "list":
+				try {
+					List<String> teams = TeamData.getAllTeams();
+					player.sendMessage("§9=§b+§9= §bTeams du serveur §9=§b+§9=");
+					for(int i = 0; i < teams.size(); i ++) {
+						player.sendMessage(ChatColor.valueOf(TeamData.getColor(teams.get(i))) + teams.get(i) + " §9: Slogan : §b" + TeamData.getSlogan(teams.get(i)) + " §9; Accès : §b" + TeamData.getAccess(teams.get(i)) + " §9; Points de classement : §b" + TeamData.getTeamNotation(teams.get(i)) + "§9.");
+					}
+				}catch (IndexOutOfBoundsException e) {
+					player.sendMessage("§eSimplebot §8» §cAucune team n'existe pour le moment.");
+				}
+				break;
+
 			default:
+				player.sendMessage("§eSimplebot §8» §cCommande inconnue, nous vous renvoyons à la page d'aide.");
+				Teams.helpPage(player);
 				break;
 
 			}

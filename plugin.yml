@@ -14,26 +14,11 @@ commands:
     description: Commandes du plugin de Teams
     permission: teams.player
     aliases: tm
-  modoteam:
-    description: Commandes modérateurs du plugin de teams
-    permission: teams.moderator
-  adminteam:
-    description: Commandes administrateurs du plugin de teams
-    permission: teams.admin
-  removep:
-    description: enlève un joueur
-    permission: teams.admin
     
 permissions:
   teams.player:
     description: permission du joueur basique
     default: true
-  teams.moderator:
-    description: permission du modérateur
-    default: false
-  teams.admin:
-    description: toutes les permission du plugin
-    default: op
   teams.vote:
     description: permission pour voter
     default: op

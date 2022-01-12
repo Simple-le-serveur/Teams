@@ -42,6 +42,8 @@ public class AssautFinalFightTask extends BukkitRunnable {
 				bar.removePlayer(player);
 				switch (decompte) {
 				case 5:
+					Assaut.alivePlayers.clear();
+					Assaut.alivePlayers.add(player);
 					player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1);
 					player.sendTitle("§a5", "", 0, 20, 0);
 					break;
@@ -75,7 +77,6 @@ public class AssautFinalFightTask extends BukkitRunnable {
 					player.sendMessage("§bPhase de combat final§9 : vous ne pouvez plus réapparaître ! Tuez");
 					player.sendMessage("§9les tous pour être le dernier en vie !");
 					player.sendMessage("§b=§9--------------------§b===§9-------------------§b=");
-					Assaut.alivePlayers.add(player);
 					break;
 				}
 			} catch (NullPointerException e) {
@@ -93,6 +94,7 @@ public class AssautFinalFightTask extends BukkitRunnable {
 				case 6:
 					break;
 				case 5:
+					Assaut.alivePlayers.add(player);
 					player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1);
 					player.sendTitle("§a5", "", 0, 20, 0);
 					break;
@@ -126,7 +128,6 @@ public class AssautFinalFightTask extends BukkitRunnable {
 					player.sendMessage("§bPhase de combat final§9 : vous ne pouvez plus réapparaître ! Tuez");
 					player.sendMessage("§9les tous pour être le dernier en vie !");
 					player.sendMessage("§b=§9--------------------§b===§9-------------------§b=");
-					Assaut.alivePlayers.add(player);
 					break;
 				}
 			} catch (NullPointerException e) {

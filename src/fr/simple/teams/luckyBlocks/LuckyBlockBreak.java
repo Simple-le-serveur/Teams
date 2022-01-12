@@ -225,7 +225,7 @@ public class LuckyBlockBreak implements Listener {
 						block.getWorld().dropItem(block.getLocation(), LuckyBlock.item(Material.ARROW, 32));
 						break;
 					case 35:
-						ItemStack stick1 = new ItemStack(Material.STICK);
+						ItemStack stick1 = new ItemStack(Material.WOODEN_SWORD);
 						stick1.addEnchantment(Enchantment.KNOCKBACK, 2);
 						block.getWorld().dropItem(block.getLocation(), stick1);
 						break;

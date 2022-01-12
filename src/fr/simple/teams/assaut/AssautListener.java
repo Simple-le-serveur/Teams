@@ -136,12 +136,12 @@ public class AssautListener implements Listener {
 								if (list.get(j) == p) {
 									Assaut.losers.add(p);
 									Assaut.alivePlayers.remove(j);
-									assaut.setKillsDéfenceurs(assaut.getKillsDéfenceurs() + 1);
-									return;
+									break;
 								}
 							}
-							return;
 						}
+						assaut.setKillsDéfenceurs(assaut.getKillsDéfenceurs() + 1);
+						return;
 
 					} else if (playerTeam.equals(défenceurs)) {
 						AssautData assaut = AssautData.AssautData.get(attaquants);
@@ -151,12 +151,12 @@ public class AssautListener implements Listener {
 								if (list.get(j) == p) {
 									Assaut.losers.add(p);
 									Assaut.alivePlayers.remove(j);
-									assaut.setKillsAttaquants(assaut.getKillsAttaquants() + 1);
-									return;
+									break;
 								}
 							}
-							return;
 						}
+						assaut.setKillsAttaquants(assaut.getKillsAttaquants() + 1);
+						return;
 
 					}
 
@@ -347,7 +347,7 @@ public class AssautListener implements Listener {
 									AssautData assaut = AssautData.AssautData.get(attaquants);
 									if (assaut.getPhase().equals("préparation")) {
 										event.setCancelled(true);
-										event.getEntity().sendMessage(teams.prefix
+										event.getDamager().sendMessage(teams.prefix
 												+ " §cVous ne pouvez pas attaquer les joueurs lors de la phase de préparation !");
 										return;
 									}
@@ -366,16 +366,12 @@ public class AssautListener implements Listener {
 									event.setCancelled(true);
 									return;
 								} else {
-									try {
-										AssautData assaut = AssautData.AssautData.get(attaquants);
-										if (assaut.getPhase().equals("préparation")) {
-											event.setCancelled(true);
-											event.getEntity().sendMessage(teams.prefix
-													+ " §cVous ne pouvez pas attaquer les joueurs lors de la phase de préparation !");
-											return;
-										}
-									} catch (NullPointerException e) {
-
+									AssautData assaut = AssautData.AssautData.get(attaquants);
+									if (assaut.getPhase().equals("préparation")) {
+										event.setCancelled(true);
+										event.getDamager().sendMessage(teams.prefix
+												+ " §cVous ne pouvez pas attaquer les joueurs lors de la phase de préparation !");
+										return;
 									}
 								}
 							}
@@ -388,7 +384,7 @@ public class AssautListener implements Listener {
 					}
 
 					if (event.getDamager() instanceof Player) {
-						String damagerTeam = TeamData.getPlayerTeam(event.getEntity().getUniqueId());
+						String damagerTeam = TeamData.getPlayerTeam(event.getDamager().getUniqueId());
 						AssautData assaut = AssautData.AssautData.get(attaquants);
 						if (playerTeam.equals(damagerTeam)) {
 							event.setCancelled(true);
@@ -423,8 +419,8 @@ public class AssautListener implements Listener {
 					String pDéfenceurs = current.split("\\s+")[1];
 					if (TeamData.getPlayerTeam(event.getPlayer().getUniqueId()).equals(pAttaquants)
 							|| TeamData.getPlayerTeam(event.getPlayer().getUniqueId()).equals(pDéfenceurs)) {
-						attaquants = current.split("\\s+")[0];
-						défenceurs = current.split("\\s+")[1];
+						attaquants = current.split("\\s+")[1];
+						défenceurs = current.split("\\s+")[2];
 					}
 				}
 			}

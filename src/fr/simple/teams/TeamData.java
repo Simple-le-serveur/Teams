@@ -177,29 +177,60 @@ public class TeamData {
 				.getConfigurationSection("teams." + teamName + ".players");
 		
 		if (rank == "chefs") {
-			@SuppressWarnings("unchecked")
-			List<String> players = (List<String>) configurationSection.getList("chefs");
-			players.add(playerName.toString());
-			configuration.set("teams." + teamName + ".players.chefs", players);
-			fin(file, configuration);
+			
+			try {
+				@SuppressWarnings("unchecked")
+				List<String> players = (List<String>) configurationSection.getList("chefs");
+				players.add(playerName.toString());
+				configuration.set("teams." + teamName + ".players.chefs", players);
+				fin(file, configuration);
+			} catch (NullPointerException e) {
+				List<String> list = new ArrayList<String>();
+				list.add(playerName.toString());
+				configuration.set("teams." + teamName + ".players.membres", list);
+				fin(file, configuration);
+			}
 		} else if (rank == "sous-chefs") {
-			@SuppressWarnings("unchecked")
-			List<String> players1 = (List<String>) configurationSection.getList("sous-chefs");
-			players1.add(playerName.toString());
-			configuration.set("teams." + teamName + ".players.sous-chefs", players1);
-			fin(file, configuration);
+			
+			try {
+				@SuppressWarnings("unchecked")
+				List<String> players1 = (List<String>) configurationSection.getList("sous-chefs");
+				players1.add(playerName.toString());
+				configuration.set("teams." + teamName + ".players.sous-chefs", players1);
+				fin(file, configuration);
+			} catch (NullPointerException e) {
+				List<String> list11 = new ArrayList<String>();
+				list11.add(playerName.toString());
+				configuration.set("teams." + teamName + ".players.membres", list11);
+				fin(file, configuration);
+			}
 		} else if (rank == "membres-de-confiance") { 
-			@SuppressWarnings("unchecked")
-			List<String> players11 = (List<String>) configurationSection.getList("membres-de-confiance");
-			players11.add(playerName.toString());
-			configuration.set("teams." + teamName + ".players.membres-de-confiance", players11);
-			fin(file, configuration);
+			try {
+				@SuppressWarnings("unchecked")
+				List<String> players11 = (List<String>) configurationSection.getList("membres-de-confiance");
+				players11.add(playerName.toString());
+				configuration.set("teams." + teamName + ".players.membres-de-confiance", players11);
+				fin(file, configuration);
+			} catch (NullPointerException e) {
+				List<String> list11 = new ArrayList<String>();
+				list11.add(playerName.toString());
+				configuration.set("teams." + teamName + ".players.membres", list11);
+				fin(file, configuration);
+			}
 		} else {
-			@SuppressWarnings("unchecked")
-			List<String> players111 = (List<String>) configurationSection.getList("membres");
-			players111.add(playerName.toString());
-			configuration.set("teams." + teamName + ".players.membres", players111);
-			fin(file, configuration);
+			try {
+				@SuppressWarnings("unchecked")
+				List<String> players111 = (List<String>) configurationSection.getList("membres");
+				players111.add(playerName.toString());
+				configuration.set("teams." + teamName + ".players.membres", players111);
+				fin(file, configuration);
+			} catch (NullPointerException e) {
+				List<String> list111 = new ArrayList<String>();
+				list111.add(playerName.toString());
+				configuration.set("teams." + teamName + ".players.membres", list111);
+				fin(file, configuration);
+			}
+			
 		}
 			
 	}

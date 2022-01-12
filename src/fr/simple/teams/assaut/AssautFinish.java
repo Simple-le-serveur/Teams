@@ -25,25 +25,19 @@ public class AssautFinish {
 	@SuppressWarnings({ "deprecation", "unused" })
 	public AssautFinish(AssautData assaut, Teams teams) {
 
-		System.out.println("§e1 Kills attaquants : " + assaut.getKillsAttaquants() + " ; Kills défenceurs : "
-				+ assaut.getKillsDéfenceurs());
-
 		this.teams = teams;
 
 		List<String> attaquantPlayers = TeamData.getAllPlayerFromTeam(assaut.getAttaquants());
 		List<String> défenceursPlayers = TeamData.getAllPlayerFromTeam(assaut.getDéfenceurs());
 
 		Assaut.alivePlayers.clear();
-		System.out.println("Taille de la liste des losers : " + Assaut.losers.size());
 
 		// tp des joueurs
 		Location locToTp = new Location(Bukkit.getWorld("world"), 55, 103.1, 106);
 		for (int p = 0; p < attaquantPlayers.size(); p++) {
 			try {
 				Player current = Bukkit.getPlayer(UUID.fromString(attaquantPlayers.get(p)));
-				Bukkit.getConsoleSender().sendMessage("Joueur actuel : " + current.getName());
 				for (int i = 0; i < Assaut.losers.size(); i++) {
-					Bukkit.getConsoleSender().sendMessage("Joueur actuel : " + Assaut.losers.get(i).getName());
 					if (Assaut.losers.get(i) == current) {
 						Assaut.losers.remove(i);
 					}
@@ -77,10 +71,7 @@ public class AssautFinish {
 				continue;
 			}
 		}
-
-		System.out.println("§e 2 Kills attaquants : " + assaut.getKillsAttaquants() + " ; Kills défenceurs : "
-				+ assaut.getKillsDéfenceurs());
-
+		
 		// scan de la map
 		Location claimB1 = ClaimData.getFirstLoc(assaut.getDéfenceurs());
 		Location claimB2 = ClaimData.getSecondLoc(assaut.getDéfenceurs());
@@ -120,33 +111,22 @@ public class AssautFinish {
 
 		// calcul des kills
 		final float totalKills = assaut.getKillsAttaquants() + assaut.getKillsDéfenceurs();
-		Bukkit.getConsoleSender().sendMessage("Kills totaux : " + totalKills);
 		float ptPerKill = 6 / totalKills;
-		Bukkit.getConsoleSender().sendMessage("Point par kill : " + ptPerKill);
 		pointsAttaquants = pointsAttaquants + assaut.getKillsAttaquants() * ptPerKill;
-		Bukkit.getConsoleSender().sendMessage("Points attaquants : " + pointsAttaquants);
 		pointsDéfenceurs = pointsDéfenceurs + assaut.getKillsDéfenceurs() * ptPerKill;
-		Bukkit.getConsoleSender().sendMessage("Points défenceurs : " + pointsDéfenceurs);
 
 		// calcul de la destruction
 		// pBreak : pourcentage de blocs cassés
-		Bukkit.getConsoleSender()
-				.sendMessage("Calcul du pourcentage de blocks cassés : 100 * " + BC + " / " + assaut.getBlocks());
 		float pBreak = 100 * BC / assaut.getBlocks();
 		pBreak = 100 - pBreak;
-		Bukkit.getConsoleSender().sendMessage("Pourcentage de blocks cassés : " + pBreak + "%");
 		// ptPerPercent : point par pourcentage cassé
 		float ptPerPercent = 0.06f;
-		Bukkit.getConsoleSender().sendMessage("Point par pourcent de destruction : " + ptPerPercent);
 		pointsAttaquants = pointsAttaquants + pBreak * ptPerPercent;
-		Bukkit.getConsoleSender().sendMessage("Points attaquants : " + pBreak * ptPerPercent);
 		pointsDéfenceurs = pointsDéfenceurs + (100 - pBreak) * ptPerPercent;
-		Bukkit.getConsoleSender().sendMessage("Points défenceurs : " + (100 - pBreak) * ptPerPercent);
 
 		// calcul de la banque cassée
 		if (assaut.isBankChestIsBreaked()) {
 			pointsAttaquants = pointsAttaquants + 8;
-			Bukkit.getConsoleSender().sendMessage("Coffre cassé");
 
 		} else {
 
@@ -159,10 +139,8 @@ public class AssautFinish {
 							.sendMessage("Nom attendu pour le coffre de banque : banque " + assaut.getDéfenceurs());
 					if (chestName.equals("banque " + assaut.getDéfenceurs())) {
 						pointsDéfenceurs = pointsDéfenceurs + 8;
-						Bukkit.getConsoleSender().sendMessage("Coffre non cassé");
 					} else {
 						pointsAttaquants = pointsAttaquants + 8;
-						Bukkit.getConsoleSender().sendMessage("Coffre cassé");
 					}
 				} catch (NullPointerException e) {
 
@@ -170,7 +148,6 @@ public class AssautFinish {
 
 			} else {
 				pointsAttaquants = pointsAttaquants + 8;
-				Bukkit.getConsoleSender().sendMessage("Coffre cassé");
 			}
 
 		}

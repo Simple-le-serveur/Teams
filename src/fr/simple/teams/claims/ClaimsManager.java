@@ -7,17 +7,20 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 
 import fr.simple.teams.TeamData;
 import fr.simple.teams.Teams;
+import fr.simple.teams.assaut.Assaut;
 
 public class ClaimsManager implements Listener {
 
@@ -83,12 +86,83 @@ public class ClaimsManager implements Listener {
 							.equals(TeamData.getPlayerTeam(event.getDamager().getUniqueId()))) {
 						return;
 					}
-					event.setCancelled(true);
-					event.getDamager().sendMessage(teams.prefix + " §cCette animal est protégé par la Team "
-							+ Claims.claimsList.get(x).getName() + ".");
+					try {
+						String playerTeam = TeamData.getPlayerTeam(event.getDamager().getUniqueId());
+						if (!playerTeam.equals("null")) {
+
+							List<String> teamsInFight = Assaut.teamsInFight2;
+							for (int i = 0; i < teamsInFight.size(); i++) {
+
+								String current = teamsInFight.get(i);
+								String[] words = current.split("\\s+");
+								String attaquants = words[1];
+								String défenceurs = words[2];
+
+								if (playerTeam.equals(attaquants) || playerTeam.equals(défenceurs)) {
+									return;
+								}
+							}
+							event.setCancelled(true);
+							event.getDamager().sendMessage(teams.prefix + " §cCette animal est protégé par la Team "
+									+ Claims.claimsList.get(x).getName() + ".");
+						}
+						event.setCancelled(true);
+						event.getDamager().sendMessage(teams.prefix + " §cCette animal est protégé par la Team "
+								+ Claims.claimsList.get(x).getName() + ".");
+					}catch(NullPointerException e) {
+						event.setCancelled(true);
+						event.getDamager().sendMessage(teams.prefix + " §cCette animal est protégé par la Team "
+								+ Claims.claimsList.get(x).getName() + ".");
+					}
+					
 				}
 			}
+		} else if (event.getCause().equals(DamageCause.PROJECTILE)) {
+			for (int x = 0; x < Claims.claimsList.size(); x++) {
+				if (Claims.claimsList.get(x).isInArea(event.getEntity().getLocation())) {
+					if (Claims.claimsList.get(x).getName()
+							.equals(TeamData.getPlayerTeam(event.getDamager().getUniqueId()))) {
+						return;
+					}
+					try {
+						Projectile proj = (Projectile) event.getDamager();
+						if (proj.getShooter() instanceof Player) {
+							Player damager = (Player) proj.getShooter();
+							String playerTeam = TeamData.getPlayerTeam(damager.getUniqueId());
+							if (!playerTeam.equals("null")) {
+
+								List<String> teamsInFight = Assaut.teamsInFight2;
+								for (int i = 0; i < teamsInFight.size(); i++) {
+
+									String current = teamsInFight.get(i);
+									String[] words = current.split("\\s+");
+									String attaquants = words[1];
+									String défenceurs = words[2];
+
+									if (playerTeam.equals(attaquants) || playerTeam.equals(défenceurs)) {
+										return;
+									}
+								}
+								event.setCancelled(true);
+								event.getDamager().sendMessage(teams.prefix + " §cCette animal est protégé par la Team "
+										+ Claims.claimsList.get(x).getName() + ".");
+							}
+							event.setCancelled(true);
+							event.getDamager().sendMessage(teams.prefix + " §cCette animal est protégé par la Team "
+									+ Claims.claimsList.get(x).getName() + ".");
+						} 
+					
+					}catch(NullPointerException e) {
+						event.setCancelled(true);
+						event.getDamager().sendMessage(teams.prefix + " §cCette animal est protégé par la Team "
+								+ Claims.claimsList.get(x).getName() + ".");
+					}
+					
+				}
+				
+			}
 		}
+			
 	}
 
 	@SuppressWarnings("deprecation")
@@ -144,7 +218,7 @@ public class ClaimsManager implements Listener {
 						if (gp.getPos1() != null || gp.getPos2() == null) {
 							gp.setPos2(event.getClickedBlock().getLocation());
 
-							if (gp.getPos1().distance(gp.getPos2()) > 250) {
+							if (gp.getPos1().distance(gp.getPos2()) > 2000) {
 								player.sendMessage(
 										teams.prefix + " §cRégion trop grande, veuilliez en définir une plus petite.");
 								end(gp, player);

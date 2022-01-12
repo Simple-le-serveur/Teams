@@ -1042,8 +1042,6 @@ public class TeamListener implements Listener {
 						data.setTpsAttaque(data.getTpsAttaque() - 10);
 						AssautRequestGUI.assautRequestGUIPhasesAttaqueTPS(player);
 					}
-					data.setTpsAttaque(data.getTpsAttaque() - 10);
-					AssautRequestGUI.assautRequestGUIPhasesAttaqueTPS(player);
 				} else if (current.getItemMeta().getDisplayName().equals("§b+10 minutes")) {
 					AssautRequestData data = AssautRequestData.AssautRequestData.get(player.getName());
 					if (data.getTpsAttaque() == 240) {
@@ -1075,26 +1073,25 @@ public class TeamListener implements Listener {
 				break;
 			case GREEN_CONCRETE:
 				try {
-					AssautRequestSendData data = AssautRequestSendData.AssautRequestSendData
-							.get(TeamData.getPlayerTeam(player.getUniqueId()));
-					if (ClaimData.getFirstLoc(data.getDéfenceurs()) == null) {
+					AssautRequestSendData data1 = AssautRequestSendData.AssautRequestSendData.get(TeamData.getPlayerTeam(player.getUniqueId()));
+					if (ClaimData.getFirstLoc(data1.getDéfenceurs()) == null) {
 
 						player.sendMessage(teams.prefix + " §cCette team ne possède pas de repère claim.");
-						player.performCommand("team denyAttack " + data.getAttaquants());
+						player.performCommand("team denyAttack " + data1.getAttaquants());
 						return;
 					}
-					if (ClaimData.getFirstLoc(data.getDéfenceurs()) == null) {
+					if (TeamData.getBankChest(data1.getDéfenceurs()) == null) {
 
 						player.sendMessage(teams.prefix + " §cCette team ne possède pas de coffre banque de team.");
-						player.performCommand("team denyAttack " + data.getAttaquants());
+						player.performCommand("team denyAttack " + data1.getAttaquants());
 						return;
 					}
 					player.closeInventory();
-					Assaut assaut = new Assaut();
-					assaut.startAssaut(data, teams);
+					Assaut assaut1 = new Assaut();
+					assaut1.startAssaut(data1, teams);
 					break;
 				} catch (NullPointerException e) {
-					player.sendMessage("§eSimplebot §8» §cVous n'avez aucune demande d'assaut en cours.");
+					player.sendMessage("§eSimplebot §8» §cVous n'avez aucune demande d'assaut en cours, ou la team n'a pas de claim ou de coffre banque.");
 					player.closeInventory();
 				}
 				break;

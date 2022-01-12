@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -79,6 +80,25 @@ public class Teams extends JavaPlugin {
 			eco = economy.getProvider();
 		}
 		return (eco != null);
+	}
+	
+	public static void helpPage(Player player) {
+		player.sendMessage("§9=§b+§9= §bPage d'aide §9=§b+§9=");
+		player.sendMessage("§b/team create §9Créer une team");
+		player.sendMessage("§b/team info <team> §9Voir les informations sur une team");
+		player.sendMessage("§b/team attack <team> §9Attaquer une team");
+		player.sendMessage("§b/team control §9Contrôler sa team");
+		player.sendMessage("§b/team join <team> §9Rejoindre une team");
+		player.sendMessage("§b/team invite <joueur> §9Inviter un joueur dans sa team");
+		player.sendMessage("§b/team leave §9Quitter sa team");
+		player.sendMessage("§b/team cancel §9Ne fait rien");
+		player.sendMessage("§b/team accept §9Accepter une invitation");
+		player.sendMessage("§b/team deny §9Refuser une invitation");
+		player.sendMessage("§b/team top §9Voir le classement des teams");
+		player.sendMessage("§b/team acceptAttack §9Accepter une attaque");
+		player.sendMessage("§b/team denyAttack §9Refuser une attaque");
+		player.sendMessage("§b/team tpAttack §9Se téléporter a l'attaque");
+		player.sendMessage("§b/team tpClaim §9Se téléporter a son claim");
 	}
 
 }

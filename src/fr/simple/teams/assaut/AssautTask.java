@@ -50,15 +50,10 @@ public class AssautTask extends BukkitRunnable {
 	@Override
 	public void run() {
 
-		System.out.println("§eKills attaquants : " + assaut.getKillsAttaquants() + " ; Kills défenceurs : "
-				+ assaut.getKillsDéfenceurs());
-
 		if (assaut.isBankChestIsBreaked() == false) {
 			if (block.getType() == Material.CHEST) {
 				try {
 					String chestName = ((Chest) block.getState()).getCustomName();
-					Bukkit.getConsoleSender()
-							.sendMessage("Nom attendu pour le coffre de banque : banque " + assaut.getDéfenceurs());
 					if (chestName.equals("banque " + assaut.getDéfenceurs())) {
 					} else {
 						assaut.setBankChestIsBreaked(true);
@@ -169,6 +164,20 @@ public class AssautTask extends BukkitRunnable {
 			if (list.size() == 1 || list.size() == 0) {
 				new AssautFinish(assaut, teams);
 				cancel();
+			} else {
+				int a = 0;
+				int d = 0;
+				for(int i = 0; i < list.size(); i ++) {
+					if(TeamData.getPlayerTeam(list.get(i).getUniqueId()).equals(assaut.getAttaquants())) {
+						a++;
+					} else if(TeamData.getPlayerTeam(list.get(i).getUniqueId()).equals(assaut.getDéfenceurs())) {
+						d++;
+					}
+				}
+				if(a == 0 || d == 0) {
+					new AssautFinish(assaut, teams);
+					cancel();
+				}
 			}
 
 		}
