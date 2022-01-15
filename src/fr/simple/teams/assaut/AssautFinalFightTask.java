@@ -42,7 +42,6 @@ public class AssautFinalFightTask extends BukkitRunnable {
 				bar.removePlayer(player);
 				switch (decompte) {
 				case 5:
-					Assaut.alivePlayers.clear();
 					Assaut.alivePlayers.add(player);
 					player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1);
 					player.sendTitle("§a5", "", 0, 20, 0);

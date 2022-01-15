@@ -11,7 +11,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import fr.simple.teams.assaut.AssautListener;
 import fr.simple.teams.claims.Claims;
 import fr.simple.teams.claims.ClaimsManager;
-import fr.simple.teams.commands.CommandRemovep;
 import fr.simple.teams.commands.TeamCommand;
 import fr.simple.teams.customsItems.CustomsItemsListeners;
 import fr.simple.teams.customsItems.InitCustomsItems;
@@ -38,7 +37,6 @@ public class Teams extends JavaPlugin {
 		}
 
 		getCommand("team").setExecutor(new TeamCommand(null));
-		getCommand("removep").setExecutor(new CommandRemovep());
 
 		getServer().getPluginManager().registerEvents(new ClaimsManager(this), this);
 		getServer().getPluginManager().registerEvents(new TeamListener(this), this);

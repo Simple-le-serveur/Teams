@@ -411,12 +411,12 @@ public class AssautListener implements Listener {
 		for (int i = 0; i < Assaut.losers.size(); i++) {
 			String attaquants = "testtest";
 			String défenceurs = "testtest";
-			if (event.getPlayer() == Assaut.losers.get(i)) {
+			if (event.getPlayer().getName().equals(Assaut.losers.get(i).getName())) {
 				List<String> teamsInFight = Assaut.teamsInFight2;
 				for (int j = 0; j < teamsInFight.size(); j++) {
 					String current = teamsInFight.get(j);
-					String pAttaquants = current.split("\\s+")[0];
-					String pDéfenceurs = current.split("\\s+")[1];
+					String pAttaquants = current.split("\\s+")[1];
+					String pDéfenceurs = current.split("\\s+")[2];
 					if (TeamData.getPlayerTeam(event.getPlayer().getUniqueId()).equals(pAttaquants)
 							|| TeamData.getPlayerTeam(event.getPlayer().getUniqueId()).equals(pDéfenceurs)) {
 						attaquants = current.split("\\s+")[1];
@@ -430,8 +430,8 @@ public class AssautListener implements Listener {
 				Location claimB2 = ClaimData.getSecondLoc(défenceurs);
 				double xMin = Math.min(claimB1.getX(), claimB2.getX()), xMax = Math.max(claimB1.getX(), claimB2.getX());
 				double zMin = Math.min(claimB1.getZ(), claimB2.getZ()), zMax = Math.max(claimB1.getZ(), claimB2.getZ());
-				if (event.getPlayer().getLocation().getX() < xMin - 50) { /// zone alentoure + pas de joueur bloqué
-					if (event.getPlayer().getLocation().getX() < xMin - 56) {
+				if (event.getPlayer().getLocation().getX() < (xMin - 50)) { /// zone alentoure + pas de joueur bloqué
+					if (event.getPlayer().getLocation().getX() < (xMin - 56)) {
 						event.getPlayer().teleport(AssautFunctions.tpZoneClaim(claimB1, claimB2));
 						event.getPlayer().sendMessage(teams.prefix
 								+ " §cVous ne pouvez pas partir ! Attendez que tout le monde soit mort pour voir si vous avez gagné !");
@@ -446,8 +446,8 @@ public class AssautListener implements Listener {
 							+ " §cVous ne pouvez pas partir ! Attendez que tout le monde soit mort pour voir si vous avez gagné !");
 					event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.ENTITY_ENDER_PEARL_THROW, 10,
 							10);
-				} else if (event.getPlayer().getLocation().getZ() < zMin - 50) {
-					if (event.getPlayer().getLocation().getZ() < zMin - 56) {
+				} else if (event.getPlayer().getLocation().getZ() < (zMin - 50)) {
+					if (event.getPlayer().getLocation().getZ() < (zMin - 56)) {
 						event.getPlayer().teleport(AssautFunctions.tpZoneClaim(claimB1, claimB2));
 						event.getPlayer().sendMessage(teams.prefix
 								+ " §cVous ne pouvez pas partir ! Attendez que tout le monde soit mort pour voir si vous avez gagné !");
@@ -462,8 +462,8 @@ public class AssautListener implements Listener {
 							+ "§cVous ne pouvez pas partir ! Attendez que tout le monde soit mort pour voir si vous avez gagné !");
 					event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.ENTITY_ENDER_PEARL_THROW, 10,
 							10);
-				} else if (event.getPlayer().getLocation().getX() > xMax + 50) {
-					if (event.getPlayer().getLocation().getX() > xMax + 56) {
+				} else if (event.getPlayer().getLocation().getX() > (xMax + 50)) {
+					if (event.getPlayer().getLocation().getX() > (xMax + 56)) {
 						event.getPlayer().teleport(AssautFunctions.tpZoneClaim(claimB1, claimB2));
 						event.getPlayer().sendMessage(teams.prefix
 								+ " §cVous ne pouvez pas partir ! Attendez que tout le monde soit mort pour voir si vous avez gagné !");
@@ -478,8 +478,8 @@ public class AssautListener implements Listener {
 							+ "§cVous ne pouvez pas partir ! Attendez que tout le monde soit mort pour voir si vous avez gagné !");
 					event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.ENTITY_ENDER_PEARL_THROW, 10,
 							10);
-				} else if (event.getPlayer().getLocation().getZ() > zMax + 50) {
-					if (event.getPlayer().getLocation().getZ() > zMax + 56) {
+				} else if (event.getPlayer().getLocation().getZ() > (zMax + 50)) {
+					if (event.getPlayer().getLocation().getZ() > (zMax + 56)) {
 						event.getPlayer().teleport(AssautFunctions.tpZoneClaim(claimB1, claimB2));
 						event.getPlayer().sendMessage(teams.prefix
 								+ " §cVous ne pouvez pas partir ! Attendez que tout le monde soit mort pour voir si vous avez gagné !");

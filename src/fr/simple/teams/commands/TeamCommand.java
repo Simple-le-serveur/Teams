@@ -20,9 +20,6 @@ import fr.simple.teams.assautRequest.AssautRequestData;
 import fr.simple.teams.assautRequest.AssautRequestGUI;
 import fr.simple.teams.assautRequest.AssautRequestSendData;
 import fr.simple.teams.claims.ClaimData;
-import fr.simple.teams.customsItems.BridgeEgg;
-import fr.simple.teams.customsItems.FireBall;
-import fr.simple.teams.luckyBlocks.LuckyBlock;
 import fr.simple.teams.ranking.RankingGUIs;
 import fr.simple.teams.ranking.RankingListeners;
 import fr.simple.teams.ranking.Vote;
@@ -100,14 +97,6 @@ public class TeamCommand implements TabExecutor {
 					TeamCommandCreateData data = new TeamCommandCreateData(player.getName());
 					TeamCommandCreateGUI.createTeamGUIMain(player, data);
 				}
-				break;
-
-			case "test":
-				player.getInventory().addItem(FireBall.FireBall1);
-				player.getInventory().addItem(FireBall.FireBall2);
-				player.getInventory().addItem(FireBall.FireBall3);
-				player.getInventory().addItem(BridgeEgg.BridgeEgg);
-				LuckyBlock.spawn(player.getLocation());
 				break;
 
 			case "control":

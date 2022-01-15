@@ -16,8 +16,8 @@ public class AssautRequestData {
 	
 	private String accès = "open";
 	
-	private int tpsPréparation = 4;//50
-	private int tpsAttaque = 4;//120
+	private int tpsPréparation = 50;
+	private int tpsAttaque = 120;
 	
 	//private int mise = 1000;
 	

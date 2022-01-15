@@ -44,7 +44,7 @@ public class AssautFinish {
 				}
 				current.setGameMode(GameMode.SURVIVAL);
 				current.teleport(locToTp);
-				current.sendTitle("§bScan en cours...", "§9Nous annalysons le champ de bataille", 20 * 1, 20 * 3,
+				current.sendTitle("§bScan en cours...", "§9Nous analysons le champ de bataille", 20 * 1, 20 * 3,
 						20 * 1);
 				current.playSound(current.getLocation(), Sound.ENTITY_TNT_PRIMED, 10, 1);
 				current.playSound(current.getLocation(), Sound.BLOCK_PISTON_EXTEND, 10, 1);
@@ -63,7 +63,7 @@ public class AssautFinish {
 				}
 				current.setGameMode(GameMode.SURVIVAL);
 				current.teleport(locToTp);
-				current.sendTitle("§bScan en cours...", "§9Nous annalysons le champ de bataille", 20 * 1, 20 * 3,
+				current.sendTitle("§bScan en cours...", "§9Nous analysons le champ de bataille", 20 * 1, 20 * 3,
 						20 * 1);
 				current.playSound(current.getLocation(), Sound.ENTITY_TNT_PRIMED, 10, 1);
 				current.playSound(current.getLocation(), Sound.BLOCK_PISTON_EXTEND, 10, 1);

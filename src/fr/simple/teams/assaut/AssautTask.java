@@ -148,6 +148,7 @@ public class AssautTask extends BukkitRunnable {
 			if (bar.getProgress() == 0) {
 				assaut.setPhase("combat_final");
 				time = assaut.getTpsAttaque();
+				Assaut.alivePlayers.clear();
 				new AssautFinalFightTask(assaut, teams).runTaskTimer(teams, 0L, 20L);
 			}
 

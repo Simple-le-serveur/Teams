@@ -4,7 +4,7 @@ version: 1.0
 description: Simple, le plugin de teams est le plugin de teams du serveur.
 api-version: 1.16
 author: zetiti10
-website: simple.zapto.org
+website: https://simple.zapto.org/
 prefix: Teams
 depend: [Vault]
 load: POSTWORLD
