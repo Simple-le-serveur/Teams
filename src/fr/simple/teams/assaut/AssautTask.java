@@ -149,6 +149,30 @@ public class AssautTask extends BukkitRunnable {
 				assaut.setPhase("combat_final");
 				time = assaut.getTpsAttaque();
 				Assaut.alivePlayers.clear();
+				for(int i = 0; i < pA.size(); i ++) {
+					try {
+						final Player player = Bukkit.getPlayer(UUID.fromString(pA.get(i)));
+						if(player == null) {
+							continue;
+						} else {
+							Assaut.alivePlayers.add(player);
+						}
+					} catch (NullPointerException e) {
+						continue;
+					}
+				}
+				for(int i = 0; i < pD.size(); i ++) {
+					try {
+						final Player player = Bukkit.getPlayer(UUID.fromString(pD.get(i)));
+						if(player == null) {
+							continue;
+						} else {
+							Assaut.alivePlayers.add(player);
+						}
+					} catch (NullPointerException e) {
+						continue;
+					}
+				}
 				new AssautFinalFightTask(assaut, teams).runTaskTimer(teams, 0L, 20L);
 			}
 
