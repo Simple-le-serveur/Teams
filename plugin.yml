@@ -2,7 +2,7 @@ main: fr.simple.teams.Teams
 name: Teams
 version: 1.0
 description: Simple, le plugin de teams est le plugin de teams du serveur.
-api-version: 1.18.1
+api-version: 1.18
 author: zetiti10
 website: https://simple.zapto.org/
 prefix: Teams

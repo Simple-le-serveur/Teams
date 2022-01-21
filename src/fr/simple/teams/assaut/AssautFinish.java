@@ -83,7 +83,7 @@ public class AssautFinish {
 		int BC = 0;
 		int LCR = 0;
 
-		for (int y = 0; y < 256; y++) {
+		for (int y = -64; y < 320; y++) {
 			for (int x = (int) (xMin); x < xMax; x++) {
 				for (int z = (int) (zMin); z < (zMax); z++) {
 					if (new Location(claimB1.getWorld(), x, y, z).getBlock().getType() != Material.AIR) {
