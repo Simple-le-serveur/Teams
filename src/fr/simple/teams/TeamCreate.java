@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
@@ -38,7 +39,7 @@ public class TeamCreate {
 		try {
 			configuration.save(file);
 		} catch (IOException e) {
-			System.out.println("Une erreur fatale est survenue lors de la création du fichier \"teams.yml\".");
+			Bukkit.getConsoleSender().sendMessage("Une erreur fatale est survenue lors de la création du fichier \"teams.yml\".");
 			player.sendMessage("Une erreur fatale est survenue lors de la création de la team. Contactez le staff.");
 			e.printStackTrace();
 		}

@@ -327,7 +327,7 @@ public class TeamListener implements Listener {
 
 		switch (event.getView().getTitle()) {
 		case "§9Créer une team":
-			player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 10, 10);
+			player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
 			TeamCommandCreateData tccd = TeamCommandCreateData.TeamCommandCreateData.get(player.getName());
 			event.setCancelled(true);
 			switch (current.getType()) {
@@ -368,7 +368,7 @@ public class TeamListener implements Listener {
 			}
 			break;
 		case "§9Choix de la couleur":
-			player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 10, 10);
+			player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
 			TeamCommandCreateData tccd1 = TeamCommandCreateData.TeamCommandCreateData.get(player.getName());
 			event.setCancelled(true);
 			switch (current.getType()) {
@@ -421,7 +421,7 @@ public class TeamListener implements Listener {
 			}
 			break;
 		case "§9Choix de l'accès":
-			player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 10, 10);
+			player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
 			TeamCommandCreateData tccd11 = TeamCommandCreateData.TeamCommandCreateData.get(player.getName());
 			event.setCancelled(true);
 			switch (current.getType()) {
@@ -445,7 +445,7 @@ public class TeamListener implements Listener {
 			}
 			break;
 		case "§9Confirmation":
-			player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 10, 10);
+			player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
 			TeamCommandCreateData tccd111 = TeamCommandCreateData.TeamCommandCreateData.get(player.getName());
 			event.setCancelled(true);
 			switch (current.getType()) {
@@ -466,7 +466,7 @@ public class TeamListener implements Listener {
 
 				player.closeInventory();
 
-				double createTeamPrice = 10000;
+				double createTeamPrice = 1000000;
 				if (teams.eco.getBalance(player) < createTeamPrice) {
 					double i = createTeamPrice - teams.eco.getBalance(player);
 					player.sendMessage(teams.prefix
@@ -497,7 +497,7 @@ public class TeamListener implements Listener {
 			}
 			break;
 		case "§9Contrôle de la team":
-			player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 10, 10);
+			player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
 			event.setCancelled(true);
 			switch (current.getType()) {
 			case PLAYER_HEAD:
@@ -541,14 +541,20 @@ public class TeamListener implements Listener {
 			break;
 		case "§9Contrôle des joueurs":
 			event.setCancelled(true);
-			player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 10, 10);
 			switch (current.getType()) {
 			case PLAYER_HEAD:
 				String playerName = current.getItemMeta().getDisplayName();
-				playerName = playerName.replace("§b", "");
-				TeamCommandControlGUI.controlTeamGUIPlayersPlayer(player, playerName);
+				if (!playerName.equals(player.getName())) {
+					playerName = playerName.replace("§b", "");
+					TeamCommandControlGUI.controlTeamGUIPlayersPlayer(player, playerName);
+					player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
+				} else {
+					player.sendMessage(teams.prefix + " §cVous ne pouvez pas vous gérer-vous même.");
+					player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1, 1);
+				}
 				break;
 			case REDSTONE:
+				player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
 				TeamCommandControlGUI.controlTeamGUIMain(player);
 				break;
 			default:
@@ -557,7 +563,7 @@ public class TeamListener implements Listener {
 			break;
 		case "§9Contrôle du joueur":
 			event.setCancelled(true);
-			player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 10, 10);
+			player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
 			switch (current.getType()) {
 			case BARRIER:
 				String playerName = current.getItemMeta().getDisplayName();
@@ -578,7 +584,7 @@ public class TeamListener implements Listener {
 			break;
 		case "§9Confirmer l'expulsion":
 			event.setCancelled(true);
-			player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 10, 10);
+			player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
 			switch (current.getType()) {
 			case RED_CONCRETE:
 				TeamCommandControlGUI.controlTeamGUIMain(player);
@@ -620,7 +626,7 @@ public class TeamListener implements Listener {
 			break;
 		case "§9Permissions du joueur":
 			event.setCancelled(true);
-			player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 10, 10);
+			player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
 
 			switch (current.getType()) {
 			case RED_CONCRETE:
@@ -708,7 +714,7 @@ public class TeamListener implements Listener {
 			break;
 		case "§9Modifier la team":
 			event.setCancelled(true);
-			player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 10, 10);
+			player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
 			switch (current.getType()) {
 			case NAME_TAG:
 				player.sendMessage(teams.prefix
@@ -746,7 +752,7 @@ public class TeamListener implements Listener {
 			break;
 		case "§9Changer la couleur de la team":
 			event.setCancelled(true);
-			player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 10, 10);
+			player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
 			String team = TeamData.getPlayerTeam(player.getUniqueId());
 			switch (current.getType()) {
 			case REDSTONE:
@@ -791,7 +797,7 @@ public class TeamListener implements Listener {
 			break;
 		case "§9Changer l'accès de la team":
 			event.setCancelled(true);
-			player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 10, 10);
+			player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
 			String team1 = TeamData.getPlayerTeam(player.getUniqueId());
 			switch (current.getType()) {
 			case REDSTONE:
@@ -815,7 +821,7 @@ public class TeamListener implements Listener {
 
 		case "§9Info sur la team":
 			event.setCancelled(true);
-			player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 10, 10);
+			player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
 			switch (current.getType()) {
 			case DIAMOND_SWORD:
 				String TName = current.getItemMeta().getDisplayName();
@@ -890,21 +896,21 @@ public class TeamListener implements Listener {
 			event.setCancelled(true);
 			switch (current.getType()) {
 			case DIAMOND_SWORD:
-				player.playSound(player.getLocation(), Sound.ENTITY_ENDER_DRAGON_GROWL, 10, 10);
+				player.playSound(player.getLocation(), Sound.ENTITY_ENDER_DRAGON_GROWL, 1, 1);
 				break;
 			case CLOCK:
-				player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 10, 10);
+				player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
 				AssautRequestGUI.assautRequestGUIPhasesMain(player);
 				break;
 			case IRON_DOOR:
-				player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 10, 10);
+				player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
 				AssautRequestGUI.assautRequestGUIAccess(player);
 				break;
 			case PAPER:
-				player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 10, 10);
+				player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1, 1);
 				break;
 			case RED_CONCRETE:
-				player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 10, 10);
+				player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
 				AssautRequestData data = AssautRequestData.AssautRequestData.get(player.getName());
 				data.setAttaquants(null);
 				data.setDemandeur(null);
@@ -925,20 +931,19 @@ public class TeamListener implements Listener {
 								+ " §cCette team a déjà reçu une demande d'assaut de la part de la team §c§l"
 								+ data1.getAttaquants() + "§c.");
 					} catch (NullPointerException e) {
-						player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 10, 10);
+						player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
 						AssautRequestData data1 = AssautRequestData.AssautRequestData.get(player.getName());
-						if(!data1.getAttaquants().equals(data1.getDéfenceurs())) {
-						TeamData.attackRequest(data1.getAttaquants(), data1.getDéfenceurs(), data1.getDemandeur(),
-								data1.getAccès(), data1.getTpsPréparation(), data1.getTpsAttaque());
+						if (!data1.getAttaquants().equals(data1.getDéfenceurs())) {
+							TeamData.attackRequest(data1.getAttaquants(), data1.getDéfenceurs(), data1.getDemandeur(),
+									data1.getAccès(), data1.getTpsPréparation(), data1.getTpsAttaque());
 						} else {
-							player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 10, 10);
-							player.sendMessage(teams.prefix
-									+ " §cVous ne pouvez pas vous assiéger vous-même !");
+							player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1, 1);
+							player.sendMessage(teams.prefix + " §cVous ne pouvez pas vous assiéger vous-même !");
 						}
 						player.closeInventory();
 					}
 				} else {
-					player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 10, 10);
+					player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1, 1);
 					player.sendMessage(teams.prefix
 							+ " §cVous n'avez pas la permission requise pour envoyer une demande d'assaut !");
 				}
@@ -951,7 +956,7 @@ public class TeamListener implements Listener {
 
 		case "§9Configuration de l'accès":
 			event.setCancelled(true);
-			player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 10, 10);
+			player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
 			switch (current.getType()) {
 			case IRON_DOOR:
 				AssautRequestData data = AssautRequestData.AssautRequestData.get(player.getName());
@@ -973,7 +978,7 @@ public class TeamListener implements Listener {
 
 		case "§9Configuration des phases":
 			event.setCancelled(true);
-			player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 10, 10);
+			player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
 			switch (current.getType()) {
 			case REPEATER:
 				AssautRequestGUI.assautRequestGUIPhasesPréparationTPS(player);
@@ -995,7 +1000,7 @@ public class TeamListener implements Listener {
 
 		case "§9Configuration du temps de préparation":
 			event.setCancelled(true);
-			player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 10, 10);
+			player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
 			switch (current.getType()) {
 			case REDSTONE:
 				AssautRequestGUI.assautRequestGUIPhasesMain(player);
@@ -1027,7 +1032,7 @@ public class TeamListener implements Listener {
 
 		case "§9Configuration du temps d'attaque":
 			event.setCancelled(true);
-			player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 10, 10);
+			player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
 			switch (current.getType()) {
 			case REDSTONE:
 				AssautRequestGUI.assautRequestGUIPhasesMain(player);
@@ -1059,7 +1064,7 @@ public class TeamListener implements Listener {
 
 		case "§9Conditions de l'assaut":
 			event.setCancelled(true);
-			player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 10, 10);
+			player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
 			switch (current.getType()) {
 			case RED_CONCRETE:
 				try {
@@ -1073,7 +1078,8 @@ public class TeamListener implements Listener {
 				break;
 			case GREEN_CONCRETE:
 				try {
-					AssautRequestSendData data1 = AssautRequestSendData.AssautRequestSendData.get(TeamData.getPlayerTeam(player.getUniqueId()));
+					AssautRequestSendData data1 = AssautRequestSendData.AssautRequestSendData
+							.get(TeamData.getPlayerTeam(player.getUniqueId()));
 					if (ClaimData.getFirstLoc(data1.getDéfenceurs()) == null) {
 
 						player.sendMessage(teams.prefix + " §cCette team ne possède pas de repère claim.");
@@ -1091,7 +1097,8 @@ public class TeamListener implements Listener {
 					assaut1.startAssaut(data1, teams);
 					break;
 				} catch (NullPointerException e) {
-					player.sendMessage("§eSimplebot §8» §cVous n'avez aucune demande d'assaut en cours, ou la team n'a pas de claim ou de coffre banque.");
+					player.sendMessage(
+							"§eSimplebot §8» §cVous n'avez aucune demande d'assaut en cours, ou la team n'a pas de claim ou de coffre banque.");
 					player.closeInventory();
 				}
 				break;
@@ -1108,13 +1115,13 @@ public class TeamListener implements Listener {
 		if (event.getView().getTitle().contains("§9Richesses de la team §b")) {
 			event.setCancelled(true);
 			if (current.getType() == Material.REDSTONE) {
-				player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 10, 10);
+				player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
 				String name = event.getView().getTitle();
 				name = name.replace("§9Richesses de la team §b", "");
 				TeamCommandInfoGUI.teamInfoGUIMain(player, name);
 				return;
 			}
-			player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 10, 10);
+			player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1, 1);
 			return;
 		}
 

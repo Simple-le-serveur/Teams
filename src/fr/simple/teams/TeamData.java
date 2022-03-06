@@ -20,7 +20,7 @@ public class TeamData {
 		try {
 			configuration.save(file);
 		} catch (IOException e) {
-			System.out.println("Une erreur fatale est survenue lors de la création du fichier \"teams.yml\".");
+			Bukkit.getConsoleSender().sendMessage("Une erreur fatale est survenue lors de la création du fichier \"teams.yml\".");
 			e.printStackTrace();
 		}
 	}
