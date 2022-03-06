@@ -30,7 +30,7 @@ public class Teams extends JavaPlugin {
 	public void onEnable() {
 
 		if (!setupEconomy()) {
-			System.out.println(
+			Bukkit.getConsoleSender().sendMessage(
 					"Erreur : Vous devez avoir Vault ainsi qu'un plugin d'Economie installé sur votre serveur !");
 			getServer().getPluginManager().disablePlugin(this);
 			return;
