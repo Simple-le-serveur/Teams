@@ -20,6 +20,7 @@ import fr.simple.teams.assautRequest.AssautRequestData;
 import fr.simple.teams.assautRequest.AssautRequestGUI;
 import fr.simple.teams.assautRequest.AssautRequestSendData;
 import fr.simple.teams.claims.ClaimData;
+import fr.simple.teams.claims.ClaimsManager;
 import fr.simple.teams.ranking.RankingGUIs;
 import fr.simple.teams.ranking.RankingListeners;
 import fr.simple.teams.ranking.Vote;
@@ -56,6 +57,9 @@ public class TeamCommand implements TabExecutor {
 		listToReturn.add("tpClaim");
 		if (RankingListeners.isVoted == false && arg0.hasPermission("teams.vote")) {
 			listToReturn.add("vote");
+		}
+		if(arg0.hasPermission("teams.bypass.claims")) {
+			listToReturn.add("bypassClaims");
 		}
 		return listToReturn;
 	}
@@ -528,6 +532,16 @@ public class TeamCommand implements TabExecutor {
 			default:
 				player.sendMessage("§eSimplebot §8» §cCommande inconnue, nous vous renvoyons à la page d'aide.");
 				Teams.helpPage(player);
+				break;
+				
+			case "bypassClaims":
+				for(int i = 0; i < ClaimsManager.bypass.size(); i ++) {
+					if(player.getName().equals(ClaimsManager.bypass.get(i).getName())) {
+						ClaimsManager.bypass.remove(i);
+						break;
+					}
+				}
+				ClaimsManager.bypass.add(player);
 				break;
 
 			}

@@ -20,7 +20,6 @@ import org.bukkit.event.player.PlayerJoinEvent;
 
 import fr.simple.teams.TeamData;
 import fr.simple.teams.Teams;
-import fr.simple.teams.assaut.Assaut;
 
 public class ClaimsManager implements Listener {
 
@@ -31,12 +30,14 @@ public class ClaimsManager implements Listener {
 	}
 
 	public static List<Player> claimersList = new ArrayList<Player>();
-	
+
+	public static List<Player> bypass = new ArrayList<Player>();
+
 	private static void end(GamePlayer gp, Player player) {
 		gp.setPos1(null);
 		gp.setPos2(null);
 		claimersList.remove(player);
-		if(player.getInventory().contains(Material.GOLDEN_HOE)) {
+		if (player.getInventory().contains(Material.GOLDEN_HOE)) {
 			player.getInventory().remove(Material.GOLDEN_HOE);
 		}
 		return;
@@ -55,6 +56,9 @@ public class ClaimsManager implements Listener {
 				if (Claims.claimsList.get(x).getName().equals(TeamData.getPlayerTeam(player.getUniqueId()))) {
 					return;
 				}
+				if (TeamData.canbypass(event.getPlayer())) {
+					return;
+				}
 				event.setCancelled(true);
 				player.sendMessage(teams.prefix + " §cCette zone est protégée par la Team "
 						+ Claims.claimsList.get(x).getName() + ".");
@@ -70,9 +74,20 @@ public class ClaimsManager implements Listener {
 				if (Claims.claimsList.get(x).getName().equals(TeamData.getPlayerTeam(player.getUniqueId()))) {
 					return;
 				}
-				event.setCancelled(true);
-				player.sendMessage(teams.prefix + " §cCette zone est protégée par la Team "
-						+ Claims.claimsList.get(x).getName() + ".");
+				if (TeamData.canbypass(event.getPlayer())) {
+					return;
+				}
+				if (TeamData.isAttacking(event.getPlayer(),
+						TeamData.getPlayerTeam(event.getPlayer().getUniqueId()))) {
+					if(event.getBlock().getType() == Material.TNT || event.getBlock().getType() == Material.LADDER) {
+						
+					}
+				} else {
+					event.setCancelled(true);
+					player.sendMessage(teams.prefix + " §cCette zone est protégée par la Team "
+							+ Claims.claimsList.get(x).getName() + ".");
+				}
+				
 			}
 		}
 	}
@@ -80,41 +95,27 @@ public class ClaimsManager implements Listener {
 	@EventHandler
 	public void onPVP(EntityDamageByEntityEvent event) {
 		if (event.getDamager().getType() == EntityType.PLAYER) {
+			// pour chaque claim
 			for (int x = 0; x < Claims.claimsList.size(); x++) {
+				// si la victime est dans le claim actuel
 				if (Claims.claimsList.get(x).isInArea(event.getEntity().getLocation())) {
+					// si l'attaquant fait partie de la team du claim
 					if (Claims.claimsList.get(x).getName()
 							.equals(TeamData.getPlayerTeam(event.getDamager().getUniqueId()))) {
 						return;
 					}
-					try {
-						String playerTeam = TeamData.getPlayerTeam(event.getDamager().getUniqueId());
-						if (!playerTeam.equals("null")) {
-
-							List<String> teamsInFight = Assaut.teamsInFight2;
-							for (int i = 0; i < teamsInFight.size(); i++) {
-
-								String current = teamsInFight.get(i);
-								String[] words = current.split("\\s+");
-								String attaquants = words[1];
-								String défenceurs = words[2];
-
-								if (playerTeam.equals(attaquants) || playerTeam.equals(défenceurs)) {
-									return;
-								}
-							}
-							event.setCancelled(true);
-							event.getDamager().sendMessage(teams.prefix + " §cCette animal est protégé par la Team "
-									+ Claims.claimsList.get(x).getName() + ".");
-						}
-						event.setCancelled(true);
-						event.getDamager().sendMessage(teams.prefix + " §cCette animal est protégé par la Team "
-								+ Claims.claimsList.get(x).getName() + ".");
-					}catch(NullPointerException e) {
+					if (TeamData.canbypass((Player) event.getDamager())) {
+						return;
+					}
+					if (TeamData.isAttacking((Player) event.getDamager(),
+							TeamData.getPlayerTeam(event.getEntity().getUniqueId()))) {
+						return;
+					} else {
 						event.setCancelled(true);
 						event.getDamager().sendMessage(teams.prefix + " §cCette animal est protégé par la Team "
 								+ Claims.claimsList.get(x).getName() + ".");
 					}
-					
+
 				}
 			}
 		} else if (event.getCause().equals(DamageCause.PROJECTILE)) {
@@ -124,45 +125,34 @@ public class ClaimsManager implements Listener {
 							.equals(TeamData.getPlayerTeam(event.getDamager().getUniqueId()))) {
 						return;
 					}
+					if (TeamData.canbypass((Player) event.getDamager())) {
+						return;
+					}
 					try {
 						Projectile proj = (Projectile) event.getDamager();
 						if (proj.getShooter() instanceof Player) {
 							Player damager = (Player) proj.getShooter();
-							String playerTeam = TeamData.getPlayerTeam(damager.getUniqueId());
-							if (!playerTeam.equals("null")) {
-
-								List<String> teamsInFight = Assaut.teamsInFight2;
-								for (int i = 0; i < teamsInFight.size(); i++) {
-
-									String current = teamsInFight.get(i);
-									String[] words = current.split("\\s+");
-									String attaquants = words[1];
-									String défenceurs = words[2];
-
-									if (playerTeam.equals(attaquants) || playerTeam.equals(défenceurs)) {
-										return;
-									}
-								}
+							if (TeamData.isAttacking((Player) damager,
+									TeamData.getPlayerTeam(event.getEntity().getUniqueId()))) {
+								return;
+							} else {
 								event.setCancelled(true);
 								event.getDamager().sendMessage(teams.prefix + " §cCette animal est protégé par la Team "
 										+ Claims.claimsList.get(x).getName() + ".");
 							}
-							event.setCancelled(true);
-							event.getDamager().sendMessage(teams.prefix + " §cCette animal est protégé par la Team "
-									+ Claims.claimsList.get(x).getName() + ".");
-						} 
-					
-					}catch(NullPointerException e) {
+						}
+
+					} catch (NullPointerException e) {
 						event.setCancelled(true);
 						event.getDamager().sendMessage(teams.prefix + " §cCette animal est protégé par la Team "
 								+ Claims.claimsList.get(x).getName() + ".");
 					}
-					
+
 				}
-				
+
 			}
 		}
-			
+
 	}
 
 	@SuppressWarnings("deprecation")
@@ -170,25 +160,24 @@ public class ClaimsManager implements Listener {
 	public void onInteract(PlayerInteractEvent event) {
 		Player player = event.getPlayer();
 
-		if (event.getAction() == Action.LEFT_CLICK_BLOCK) {
+		for (int x = 0; x < Claims.claimsList.size(); x++) {
+			if (Claims.claimsList.get(x).isInArea(event.getClickedBlock().getLocation())) {
+				if (Claims.claimsList.get(x).getName().equals(TeamData.getPlayerTeam(player.getUniqueId()))) {
+					return;
+				}
+				if (TeamData.canbypass(event.getPlayer())) {
+					return;
+				}
+				event.setCancelled(true);
+				player.sendMessage(teams.prefix + " §cCette zone est protégée par la Team "
+						+ Claims.claimsList.get(x).getName() + ".");
+				if (player.getItemInHand().getType() == Material.WATER_BUCKET
+						|| player.getItemInHand().getType() == Material.LAVA_BUCKET) {
 
-			for (int x = 0; x < Claims.claimsList.size(); x++) {
-				if (Claims.claimsList.get(x).isInArea(event.getClickedBlock().getLocation())) {
-					if (Claims.claimsList.get(x).getName().equals(TeamData.getPlayerTeam(player.getUniqueId()))) {
-						return;
-					}
-					event.setCancelled(true);
 					player.sendMessage(teams.prefix + " §cCette zone est protégée par la Team "
 							+ Claims.claimsList.get(x).getName() + ".");
-					if (player.getItemInHand().getType() == Material.WATER_BUCKET
-							|| player.getItemInHand().getType() == Material.LAVA_BUCKET) {
-
-						player.sendMessage(teams.prefix + " §cCette zone est protégée par la Team "
-								+ Claims.claimsList.get(x).getName() + ".");
-					}
 				}
 			}
-
 		}
 
 		if (event.getAction() == Action.LEFT_CLICK_BLOCK) {
@@ -249,11 +238,13 @@ public class ClaimsManager implements Listener {
 
 										player.sendMessage(teams.prefix + " §9Claim de la team §b"
 												+ TeamData.getPlayerTeam(player.getUniqueId()) + " §9a été crée !");
-										
+
 										end(gp, player);
 										return;
 									}
-									player.sendMessage(teams.prefix + " §cVous ne pouvez pas claim une zone appartenant déjà à la Team " + regionget.getName() + " !");
+									player.sendMessage(teams.prefix
+											+ " §cVous ne pouvez pas claim une zone appartenant déjà à la Team "
+											+ regionget.getName() + " !");
 									end(gp, player);
 									return;
 								}
@@ -278,7 +269,7 @@ public class ClaimsManager implements Listener {
 
 							player.sendMessage(teams.prefix + " §9Claim de la team §b"
 									+ TeamData.getPlayerTeam(player.getUniqueId()) + " §9a été crée !");
-							
+
 							end(gp, player);
 							return;
 

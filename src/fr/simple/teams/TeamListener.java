@@ -466,7 +466,7 @@ public class TeamListener implements Listener {
 
 				player.closeInventory();
 
-				double createTeamPrice = 1000000;
+				double createTeamPrice = 500000;
 				if (teams.eco.getBalance(player) < createTeamPrice) {
 					double i = createTeamPrice - teams.eco.getBalance(player);
 					player.sendMessage(teams.prefix

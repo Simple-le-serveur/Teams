@@ -12,7 +12,9 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
+import fr.simple.teams.assaut.Assaut;
 import fr.simple.teams.assautRequest.AssautRequestSendData;
+import fr.simple.teams.claims.ClaimsManager;
 
 public class TeamData {
 	
@@ -480,6 +482,37 @@ public class TeamData {
 			data.setTpsPréparation(tpsPréparation);
 		}
 		
+	}
+	
+	public static boolean isAttacking(Player player, String team) {
+		try {
+			String playerTeam = TeamData.getPlayerTeam(player.getUniqueId());
+			if (!playerTeam.equals("null")) {
+				List<String> teamsInFight = Assaut.teamsInFight2;
+				for (int i = 0; i < teamsInFight.size(); i++) {
+					String current = teamsInFight.get(i);
+					String[] words = current.split("\\s+");
+					String attaquants = words[1];
+					String défenceurs = words[2];
+					if ((playerTeam.equals(attaquants) && team.equals(défenceurs)) || (playerTeam.equals(défenceurs) && team.equals(attaquants))) {
+						return true;
+					}
+				}
+				return true;
+			}
+			return true;
+		}catch(NullPointerException e) {
+			return true;
+		}
+	}
+	
+	public static boolean canbypass(Player player) {
+		for(int i = 0; i < ClaimsManager.bypass.size(); i ++) {
+			if(player.getName().equals(ClaimsManager.bypass.get(i).getName())) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 }

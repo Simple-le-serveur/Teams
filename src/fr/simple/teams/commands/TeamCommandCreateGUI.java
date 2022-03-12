@@ -41,7 +41,7 @@ public class TeamCommandCreateGUI {
 									"§9le slogan §b" + data.TeamCommandCreateDataGetSlogan() + "§9,",
 									"§9l'accès §b" + data.TeamCommandCreateDataGetAccess() + "§9,",
 									"§9et la couleur §b" + data.TeamCommandCreateDataGetColor() + "§9.", "§9",
-									"§c§lATTENTION, CELA COUTE", "§4§l10 000 §ceuros !"),
+									"§c§lATTENTION, CELA COUTE", "§4§l500 000 §ceuros !"),
 							true));
 		} else {
 			inv.setItem(50, GUIInterface.newItemC(Material.GREEN_CONCRETE, "§aQuitter et créer la team", 1,
